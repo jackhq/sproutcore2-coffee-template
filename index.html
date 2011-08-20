@@ -68,17 +68,23 @@
           <div style='float:left;'>
             <img {{bindAttr src="content.image_filename"}} style='height:50px;width:50px;'></img>
           </div>
-          <div style='width: 90%;float:right;'>
+          <div style='width: 80%;float:left;margin-left: 15px;'>
             <h4><strong>{{content.name}}</strong> {{content.strength}} {{content.form}}</h4>
             <h5>{{content.sig}}</h5>
             <p style='margin: 3px 0;'>{{content.rx_medical_note}}</p>
             <p style='margin: 3px 0;'>Last Administered by {{content.last_administered_by}} on {{content.last_administered_at}}</p>
-            Links go down here
+            <a href=''>add comments</a> | <a href=''>side effects</a> | <a href=''>warnings</a> | <a href=''>add parameter</a> | <a href=''>history</a>
+          </div>
+          <div style='width:5%;float:left;'>
+            YES/NO
           </div>
         </div>
         <div class='clear' />
       {{/collection}}
       </script>
+
+
+      <hr />
       <p>Patient Info Here</p>
       <p>Current MAR Medications and Orders</p>
       <p>
@@ -111,7 +117,8 @@
 
   <!-- JS
   ================================================== -->
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+  <script src="javascripts/jquery-1.6.1.min.js" type="text/javascript" charset="utf-8"></script>
+
   <script src="javascripts/sugar-0.9.4.min.js" type="text/javascript" charset="utf-8"></script>
   <script src="javascripts/tabs.js"></script>
   <script src="javascripts/sproutcore-2.0.beta.3.min.js" type="text/javascript" charset="utf-8"></script>
@@ -144,6 +151,9 @@
       last_administered_at: null
       image_filename: null
 
+    ResidentsShow.TimeOfDay = SC.Object.extend
+      title: null
+
     # Controllers
     ResidentsShow.residentsController = SC.ArrayProxy.create
       content: []
@@ -160,8 +170,15 @@
 
     ResidentsShow.medicationsController = SC.ArrayProxy.create
       content: []
+
       createMedication: (attributes) ->
         this.pushObject ResidentsShow.Medication.create attributes
+
+    ResidentsShow.timesofDayController = SC.ArrayProxy.create
+      content: []
+      createTOD: (title) ->
+        this.pushObject ResidentsShow.TimeOfDay.create({title: title})
+
 
     # views
 
@@ -174,6 +191,9 @@
     wings = -> ["Hall A", "Hall B"]
     rooms = -> [1,2,3,4,5,6,7,8]
     beds = -> ['Private', 'A','B']
+
+    for tod in ['Early Morning', 'Morning','Noon','Evening','Bedtime','Other']
+      ResidentsShow.timesofDayController.createTOD tod
 
     med_names = -> ["Plavix Oral", "Bentyl", "Albuterol Inhl", "Adalimumab", "Methotrexate (Anti-Rheumatic) Oral", "Prednisone Oral", "Prevacid", "Methotrexate Na (Preserv Free) Inj", "Penicillin G", "Percocet Oral", "Tylenol Oral", "Morphine", "Oxycodone Oral", "Neurontin", "Loratadine Oral", "Omeprazole Oral", "Desipramine", "Amitriptyline Oral", "Ranitidine Oral", "Warfarin"]
     strengths = -> ['5 mg', '10 mg', '25mg', '50 mg']
