@@ -62,6 +62,13 @@
       {{/collection}}
       </script>
       <hr />
+      <h4>Custom List</h4>
+      <script type='text/html'>
+      {{#collection ResidentsShow.earlyMorningView tagName="ul"}}
+        {{content.name}} - {{content.time_of_day}}
+      {{/collection}}
+      </script>
+      <hr />
       <h4>Early Morning</h4>
       <script type='text/html'>
       {{#collection contentBinding="ResidentsShow.earlyMorningController" tagName="ul"}}
@@ -191,10 +198,9 @@
         @filterProperty('time_of_day', timeOfDay)
 
 
-    ResidentsShow.earlyMorningController = SC.ArrayProxy.create
+    ResidentsShow.earlyMorningView = SC.CollectionView.extend
       content: []
-      createMeds: (med) ->
-        @pushObject med
+      ResidentsShow.medicationsController.byTimeOfDay('Morning')
 
     ResidentsShow.morningController = SC.ArrayProxy.create
       content: []
@@ -257,9 +263,9 @@
           last_administered_at: Date.create("#{Faker.Helpers.randomNumber(80).toString()}").format('{MM}-{dd}-{yyyy}')
           image_filename: 'images/jrs-logo.png'
 
-    meds = ResidentsShow.medicationsController.byTimeOfDay('Early Morning')
-    for med in meds
-      ResidentsShow.earlyMorningController.createMeds med
+    #meds = ResidentsShow.medicationsController.byTimeOfDay('Early Morning')
+    #for med in meds
+    #  ResidentsShow.earlyMorningController.createMeds med
 
     meds = ResidentsShow.medicationsController.byTimeOfDay('Morning')
     for med in meds
@@ -280,7 +286,6 @@
     meds = ResidentsShow.medicationsController.byTimeOfDay('Other')
     for med in meds
       ResidentsShow.otherController.createMeds med
-
 
   </script>
 
