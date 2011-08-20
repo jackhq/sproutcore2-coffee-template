@@ -63,10 +63,16 @@
       </script>
       <hr />
       <script type='text/html'>
-      {{#collection contentBinding="ResidentsShow.medicationsController" tagName="ul"}}
-        {{content.name}}
+      {{#collection contentBinding="ResidentsShow.timesofDayController" tagName="ul"}}
+        {{content.title}}
+        {{#each contentBinding='meds'}}
+          {{content.name}}
+        {{/each}}
       {{/collection}}
       </script>
+
+
+      <hr />
       <p>Patient Info Here</p>
       <p>Current MAR Medications and Orders</p>
       <p>
@@ -99,7 +105,8 @@
 
   <!-- JS
   ================================================== -->
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+  <script src="javascripts/jquery-1.6.1.min.js" type="text/javascript" charset="utf-8"></script>
+  
   <script src="javascripts/sugar-0.9.4.min.js" type="text/javascript" charset="utf-8"></script>
   <script src="javascripts/tabs.js"></script>
   <script src="javascripts/sproutcore-2.0.beta.3.min.js" type="text/javascript" charset="utf-8"></script>
@@ -124,6 +131,9 @@
       id: null
       resident_id: null
       name: null
+    
+    ResidentsShow.TimeOfDay = SC.Object.extend
+      title: null
 
     # Controllers
     ResidentsShow.residentsController = SC.ArrayProxy.create
@@ -146,6 +156,11 @@
           id: id
           resident_id: resident_id
           name: name
+    ResidentsShow.timesofDayController = SC.ArrayProxy.create
+      content: []
+      createTOD: (title) ->
+        this.pushObject ResidentsShow.TimeOfDay.create({title: title})
+      
 
     # views
 
@@ -158,6 +173,9 @@
     wings = -> ["Hall A", "Hall B"]
     rooms = -> [1,2,3,4,5,6,7,8]
     beds = -> ['Private', 'A','B']
+    
+    for tod in ['Early Morning', 'Morning','Noon','Evening','Bedtime','Other']
+      ResidentsShow.timesofDayController.createTOD tod
 
     # Faker Generate Meds
     for resident_id in [1]
