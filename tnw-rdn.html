@@ -62,11 +62,45 @@
       {{/collection}}
       </script>
       <hr />
+      <h4>Early Morning</h4>
       <script type='text/html'>
-      {{#collection contentBinding="ResidentsShow.medicationsController" tagName="ul"}}
-        {{content.name}} - FooBar
+      {{#collection contentBinding="ResidentsShow.earlyMorningController" tagName="ul"}}
+        {{content.name}} - {{content.time_of_day}}
       {{/collection}}
       </script>
+      <h4>Morning</h4>
+      <script type='text/html'>
+      {{#collection contentBinding="ResidentsShow.morningController" tagName="ul"}}
+        {{content.name}} - {{content.time_of_day}}
+      {{/collection}}
+      </script>
+      <h4>Noon</h4>
+      <script type='text/html'>
+      {{#collection contentBinding="ResidentsShow.noonController" tagName="ul"}}
+        {{content.name}} - {{content.time_of_day}}
+      {{/collection}}
+      </script>
+      <h4>Evening</h4>
+      <script type='text/html'>
+      {{#collection contentBinding="ResidentsShow.eveningController" tagName="ul"}}
+        {{content.name}} - {{content.time_of_day}}
+      {{/collection}}
+      </script>
+      <h4>Bedtime</h4>
+      <script type='text/html'>
+      {{#collection contentBinding="ResidentsShow.bedtimeController" tagName="ul"}}
+        {{content.name}} - {{content.time_of_day}}
+      {{/collection}}
+      </script>
+      <h4>Other</h4>
+      <script type='text/html'>
+      {{#collection contentBinding="ResidentsShow.otherController" tagName="ul"}}
+        {{content.name}} - {{content.time_of_day}}
+      {{/collection}}
+      </script>
+
+
+      <hr />
       <p>Patient Info Here</p>
       <p>Current MAR Medications and Orders</p>
       <p>
@@ -99,7 +133,8 @@
 
   <!-- JS
   ================================================== -->
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+  <script src="javascripts/jquery-1.6.1.min.js" type="text/javascript" charset="utf-8"></script>
+
   <script src="javascripts/sugar-0.9.4.min.js" type="text/javascript" charset="utf-8"></script>
   <script src="javascripts/tabs.js"></script>
   <script src="javascripts/sproutcore-2.0.beta.3.min.js" type="text/javascript" charset="utf-8"></script>
@@ -124,6 +159,10 @@
       id: null
       resident_id: null
       name: null
+      time_of_day: null
+
+    ResidentsShow.TimeOfDay = SC.Object.extend
+      title: null
 
     # Controllers
     ResidentsShow.residentsController = SC.ArrayProxy.create
@@ -141,11 +180,51 @@
 
     ResidentsShow.medicationsController = SC.ArrayProxy.create
       content: []
-      createMedication: (id, resident_id, name) ->
-        this.pushObject ResidentsShow.Medication.create
+      createMedication: (id, resident_id, name, timeOfDay) ->
+        @pushObject ResidentsShow.Medication.create
           id: id
           resident_id: resident_id
           name: name
+          time_of_day: timeOfDay
+
+      byTimeOfDay: (timeOfDay) ->
+        @filterProperty('time_of_day', timeOfDay)
+
+    ResidentsShow.timesofDayController = SC.ArrayProxy.create
+      content: []
+      createTOD: (title) ->
+        this.pushObject ResidentsShow.TimeOfDay.create({title: title})
+
+    ResidentsShow.earlyMorningController = SC.ArrayProxy.create
+      content: []
+      createMeds: (med) ->
+        @pushObject med
+
+    ResidentsShow.morningController = SC.ArrayProxy.create
+      content: []
+      createMeds: (med) ->
+        @pushObject med
+
+    ResidentsShow.noonController = SC.ArrayProxy.create
+      content: []
+      createMeds: (med) ->
+        @pushObject med
+
+    ResidentsShow.eveningController = SC.ArrayProxy.create
+      content: []
+      createMeds: (med) ->
+        @pushObject med
+
+    ResidentsShow.bedtimeController = SC.ArrayProxy.create
+      content: []
+      createMeds: (med) ->
+        @pushObject med
+
+    ResidentsShow.otherController = SC.ArrayProxy.create
+      content: []
+      createMeds: (med) ->
+        @pushObject med
+
 
     # views
 
@@ -158,13 +237,42 @@
     wings = -> ["Hall A", "Hall B"]
     rooms = -> [1,2,3,4,5,6,7,8]
     beds = -> ['Private', 'A','B']
+    times_of_day = -> ['Early Morning', 'Morning','Noon','Evening','Bedtime','Other']
+
+    for tod in times_of_day()
+      ResidentsShow.timesofDayController.createTOD tod
 
     # Faker Generate Meds
     for resident_id in [1]
       ResidentsShow.residentsController.createResident resident_id, Faker.Name.findName(), Date.create("#{Faker.Helpers.randomNumber(80).toString()} years ago").format('{MM}-{dd}-{yyyy}'), Faker.Helpers.randomize(genders()), Faker.Helpers.randomize(units()), Faker.Helpers.randomize(wings()), Faker.Helpers.randomize(rooms()), Faker.Helpers.randomize(beds())
 
       for med_id in [1..50]
-        ResidentsShow.medicationsController.createMedication med_id, resident_id, Faker.Lorem.words(1)[0]
+        ResidentsShow.medicationsController.createMedication med_id, resident_id, Faker.Lorem.words(1)[0], Faker.Helpers.randomize(times_of_day())
+
+    meds = ResidentsShow.medicationsController.byTimeOfDay('Early Morning')
+    for med in meds
+      ResidentsShow.earlyMorningController.createMeds med
+
+    meds = ResidentsShow.medicationsController.byTimeOfDay('Morning')
+    for med in meds
+      ResidentsShow.morningController.createMeds med
+
+    meds = ResidentsShow.medicationsController.byTimeOfDay('Noon')
+    for med in meds
+      ResidentsShow.noonController.createMeds med
+
+    meds = ResidentsShow.medicationsController.byTimeOfDay('Evening')
+    for med in meds
+      ResidentsShow.eveningController.createMeds med
+
+    meds = ResidentsShow.medicationsController.byTimeOfDay('Bedtime')
+    for med in meds
+      ResidentsShow.bedtimeController.createMeds med
+
+    meds = ResidentsShow.medicationsController.byTimeOfDay('Other')
+    for med in meds
+      ResidentsShow.otherController.createMeds med
+
 
   </script>
 
