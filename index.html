@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+
+  <!-- Basic Page Needs
+  ================================================== -->
+  <meta charset="utf-8">
+  <title>Your Page Title Here :)</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <!-- Mobile Specific Metas
+  ================================================== -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- CSS
+  ================================================== -->
+  <link rel="stylesheet" href="stylesheets/base.css">
+  <link rel="stylesheet" href="stylesheets/skeleton.css">
+  <link rel="stylesheet" href="stylesheets/layout.css">
+
+  <!-- Favicons
+  ================================================== -->
+  <link rel="shortcut icon" href="images/favicon.ico">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+
+</head>
+<body>
+
+
+
+  <!-- Primary Page Layout
+  ================================================== -->
+
+  <!-- Delete everything in this .container and get started on your own site! -->
+
+  <div class="container">
+    <div class="two-thirds column">
+      <h3>Resident Medication Administration Record</h3>
+      <script type='text/html'>
+      {{#collection contentBinding="ResidentsShow.residentsController" tagName="ul"}}
+        <div style='width:100%'>
+          <div style='float:left;'>
+            <img src='x' style='height:50px;width:50px;'></img>
+            <div>Current Status: <br/> LTC</div>
+          </div>
+          <div style='width: 80%;float:right;'>
+            <h4>{{content.name}} ({{content.dob}}) {{content.gender}}</h4>
+            <h5>{{content.unit}} - {{content.wing}} - Room#&nbsp;{{content.room}}  {{content.bed}}</h5>
+            <h5>Primary Dx: Congestive Heart Failure(178.00)</h5>
+            <h5>Secondary Dx: Asthmal(299.00)</h5>
+          </div>
+        </div>
+      {{/collection}}
+      </script>
+      <hr />
+      <script type='text/html'>
+      {{#collection contentBinding="ResidentsShow.medicationsController" tagName="ul"}}
+        <div style='width:100%'>
+          <div style='float:left;'>
+            <img {{bindAttr src="content.image_filename"}} style='height:50px;width:50px;'></img>
+          </div>
+          <div style='width: 80%;float:left;margin-left: 15px;'>
+            <h4><strong>{{content.name}}</strong> {{content.strength}} {{content.form}}</h4>
+            <h5>{{content.sig}}</h5>
+            <p style='margin: 3px 0;'>{{content.rx_medical_note}}</p>
+            <p style='margin: 3px 0;'>Last Administered by {{content.last_administered_by}} on {{content.last_administered_at}}</p>
+            <a href=''>add comments</a> | <a href=''>side effects</a> | <a href=''>warnings</a> | <a href=''>add parameter</a> | <a href=''>history</a>
+          </div>
+          <div style='width:5%;float:left;'>
+            YES/NO
+          </div>
+        </div>
+        <div class='clear' />
+      {{/collection}}
+      </script>
+
+
+      <hr />
+      <p>Patient Info Here</p>
+      <p>Current MAR Medications and Orders</p>
+      <p>
+        Early Morning
+        <p>PRNs</p>
+      </p>
+      <p>Morning</p>
+      <p>Noon</p>
+      <p>Evening</p>
+      <p>Other</p>
+
+    </div>
+    <div class="one-third column">
+      <div style='margin-left: 10px;'>
+        <p>Current Administrator</p>
+        <h4>User Name</h4>
+        <hr></hr>
+        <p>Allergies</p>
+        <script type='text/html'>
+          {{#collection contentBinding="ResidentsShow.allergiesController"}}
+            <span>{{content.name}}</span>
+          {{^}}
+            <p style='margin:0;padding:0;margin-left: 10px;'>No Known Allergies</p>
+          {{/collection}}
+        </script>
+        <hr></hr>
+        <p>On Hold Meds</p>
+        <hr></hr>
+        <p>Discontinued Meds</p>
+      </div>
+    </div>
+
+  </div><!-- container -->
+
+
+
+  <!-- JS
+  ================================================== -->
+  <script src="javascripts/jquery-1.6.1.min.js" type="text/javascript" charset="utf-8"></script>
+
+  <script src="javascripts/sugar-0.9.4.min.js" type="text/javascript" charset="utf-8"></script>
+  <script src="javascripts/tabs.js"></script>
+  <script src="javascripts/sproutcore-2.0.beta.3.min.js" type="text/javascript" charset="utf-8"></script>
+  <script src="javascripts/coffee-script.js" type="text/javascript" charset="utf-8"></script>
+  <script src="javascripts/Faker.js" type="text/javascript" charset="utf-8"></script>
+
+  <script type='text/coffeescript'>
+    window.ResidentsShow = SC.Application.create()
+    # Models
+    ResidentsShow.Resident = SC.Object.extend
+      id: null
+      name: null
+      dob: null
+      gender: null
+      unit: null
+      wing: null
+      room: null
+      bed: null
+
+
+    ResidentsShow.Medication = SC.Object.extend
+      id: null
+      resident_id: null
+      name: null
+      strength: null
+      form: null
+      sig: null
+      rx_medical_note: null
+      last_administered_by: null
+      last_administered_at: null
+      image_filename: null
+
+    ResidentsShow.Allergy = SC.Object.extend
+      id: null
+      resident_id: null
+      name: null
+      concept_type: null
+
+    ResidentsShow.TimeOfDay = SC.Object.extend
+      title: null
+
+    # Controllers
+    ResidentsShow.residentsController = SC.ArrayProxy.create
+      content: []
+      createResident: (id, name, dob, gender, unit, wing, room, bed) ->
+        this.pushObject ResidentsShow.Resident.create
+          id: id
+          name: name
+          dob: dob
+          gender: gender
+          unit: unit
+          wing: wing
+          room: room
+          bed: bed
+
+    ResidentsShow.medicationsController = SC.ArrayProxy.create
+      content: []
+      createMedication: (attributes) ->
+        this.pushObject ResidentsShow.Medication.create attributes
+
+    ResidentsShow.allergiesController = SC.ArrayProxy.create
+      content: []
+      createAllergy: (attributes) ->
+        this.pushObject ResidentsShow.Allergy.create attributes
+
+    ResidentsShow.timesofDayController = SC.ArrayProxy.create
+      content: []
+      createTOD: (title) ->
+        this.pushObject ResidentsShow.TimeOfDay.create({title: title})
+
+
+    # views
+
+
+
+    # Random Units
+    genders = -> ["M","F"]
+
+    units = -> ["Unit 1","Unit 2","Concelman"]
+    wings = -> ["Hall A", "Hall B"]
+    rooms = -> [1,2,3,4,5,6,7,8]
+    beds = -> ['Private', 'A','B']
+
+    for tod in ['Early Morning', 'Morning','Noon','Evening','Bedtime','Other']
+      ResidentsShow.timesofDayController.createTOD tod
+
+    med_names = -> ["Plavix Oral", "Bentyl", "Albuterol Inhl", "Adalimumab", "Methotrexate (Anti-Rheumatic) Oral", "Prednisone Oral", "Prevacid", "Methotrexate Na (Preserv Free) Inj", "Penicillin G", "Percocet Oral", "Tylenol Oral", "Morphine", "Oxycodone Oral", "Neurontin", "Loratadine Oral", "Omeprazole Oral", "Desipramine", "Amitriptyline Oral", "Ranitidine Oral", "Warfarin"]
+    strengths = -> ['5 mg', '10 mg', '25mg', '50 mg']
+    forms = -> ['tablet', 'capsule']
+    sigs = -> ['Take 2 tablets (5mg) by mouth twice a day as needed for pain.', 'Take 1 capsule by mouth at bedtime for blood pressure.', '2.0 TAB(s) once a day (at bedtime)']
+    rx_medical_notes = -> ["Refill send to Episcopo's", "Participant request for a refill at his visit today in the clinic.", "Ordered by Hamilton GI"]
+    allergy_names = -> ['penicillins', 'donepezil', 'carbamazepine', 'codeine', 'sulfa drugs']
+    allergy_types = -> ['allergen', 'ingredient']
+
+    # Faker Generate Meds
+    for resident_id in [1]
+      ResidentsShow.residentsController.createResident resident_id, Faker.Name.findName(), Date.create("#{Faker.Helpers.randomNumber(80).toString()} years ago").format('{MM}-{dd}-{yyyy}'), Faker.Helpers.randomize(genders()), Faker.Helpers.randomize(units()), Faker.Helpers.randomize(wings()), Faker.Helpers.randomize(rooms()), Faker.Helpers.randomize(beds())
+
+      for med_id in [1..20]
+        ResidentsShow.medicationsController.createMedication
+          id: med_id
+          resident_id: resident_id
+          name: Faker.Helpers.randomize(med_names())
+          strength: Faker.Helpers.randomize(strengths())
+          form: Faker.Helpers.randomize(forms())
+          sig: Faker.Helpers.randomize(sigs())
+          rx_medical_note: Faker.Helpers.randomize(rx_medical_notes())
+          last_administered_by: Faker.Name.findName()
+          last_administered_at: Date.create("#{Faker.Helpers.randomNumber(80).toString()}").format('{MM}-{dd}-{yyyy}')
+          image_filename: 'images/jrs-logo.png'
+
+      for allergy_id in [1..5]
+        ResidentsShow.allergiesController.createAllergy
+          id: allergy_id
+          resident_id: resident_id
+          name: Faker.Helpers.randomize(allergy_names())
+          concept_type: Faker.Helpers.randomize(allergy_types())
+
+  </script>
+
+<!-- End Document
+================================================== -->
+</body>
+</html>
