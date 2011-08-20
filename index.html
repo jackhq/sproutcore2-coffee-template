@@ -56,7 +56,7 @@
             <h4>{{content.name}} ({{content.dob}}) {{content.gender}}</h4>
             <h5>{{content.unit}} - {{content.wing}} - Room#&nbsp;{{content.room}}  {{content.bed}}</h5>
             <h5>Primary Dx: Congestive Heart Failure(178.00)</h5>
-            <h5>Secondary Dx: Asthmal(299.00)</h5>
+            <h5>Secondary Dx: Asthma(299.00)</h5>
           </div>
         </div>
       {{/collection}}
@@ -64,7 +64,7 @@
       <hr />
       <script type='text/html'>
       {{#collection contentBinding="ResidentsShow.medicationsController" tagName="ul"}}
-        {{content.name}}
+        {{content.name}} - FooBar
       {{/collection}}
       </script>
       <p>Patient Info Here</p>
@@ -81,15 +81,15 @@
     </div>
     <div class="one-third column">
       <div style='margin-left: 10px;'>
-        <p>Current Administrator</p>
+        <p>Current Administrator:</p>
         <h4>User Name</h4>
         <hr></hr>
-        <p>Allergies</p>
+        <p>Allergies:</p>
         <p style='margin:0;padding:0;margin-left: 10px;'>No Known Allergies</p>
         <hr></hr>
-        <p>On Hold Meds</p>
+        <p>On Hold Meds:</p>
         <hr></hr>
-        <p>Discontinued Meds</p>
+        <p>Discontinued Meds:</p>
       </div>
     </div>
 
