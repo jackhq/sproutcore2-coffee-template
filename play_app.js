@@ -1,10 +1,13 @@
 (function() {
-  var Play, friend, store, _i, _len, _ref;
+  var Play, friend, _i, _len, _ref;
   Play = SC.Application.create();
   Play.Friend = SC.Object.extend({
     name: null,
     category: null,
-    hide: false
+    hide: false,
+    early_morning: false,
+    morning: false,
+    noon: false
   });
   Play.friendsController = SC.ArrayProxy.create({
     content: [],
@@ -12,33 +15,39 @@
     coworkers: [],
     basic: [],
     arrayDidChange: function(item, idx, removedCnt, addedCnt) {
-      console.log('changed...');
       this._super(item, idx, removedCnt, addedCnt);
       this.set('best', this.filterProperty('category', 'best'));
       this.set('coworkers', this.filterProperty('category', 'coworker'));
       return this.set('basic', this.filterProperty('category', 'basic'));
     }
   });
-  store = [];
+  window.Play = Play;
   _ref = [
     {
       name: 'Tom',
       category: 'best'
     }, {
       name: 'Dick',
-      category: 'coworker'
+      category: 'best'
     }, {
       name: 'Harry',
+      category: 'best'
+    }, {
+      name: 'Jim',
       category: 'basic'
+    }, {
+      name: 'Mary',
+      category: 'basic'
+    }, {
+      name: 'Sue',
+      category: 'coworker'
     }
   ];
   for (_i = 0, _len = _ref.length; _i < _len; _i++) {
     friend = _ref[_i];
-    store.push(Play.Friend.create({
+    Play.friendsController.pushObject(Play.Friend.create({
       name: friend.name,
       category: friend.category
     }));
   }
-  Play.friendsController.set('content', store);
-  window.Play = Play;
 }).call(this);

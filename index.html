@@ -82,6 +82,38 @@
         <div class='clear' />
       {{/collection}}
       </script>
+      <hr />
+      <h2>Morning</h2>
+      <hr />
+      <script type='text/html'>
+      {{#collection contentBinding="ResidentsShow.medicationsController.morning" tagName="ul"}}
+        <h4><strong>{{content.name}}</strong> {{content.strength}} {{content.form}}</h4>
+        <p style='margin: 0 0'>Early Morning: {{content.early_morning}}</p>
+        <p style='margin: 0 0'>Morning: {{content.morning}}</p>
+        <p style='margin: 0 0'>Noon: {{content.noon}}</p>
+        <p style='margin: 0 0'>Evening: {{content.evening}}</p>
+        <p style='margin: 0 0'>Before Bedtime: {{content.before_bedtime}}</p>
+        <p style='margin: 0 0'>Bedtime: {{content.bedtime}}</p>
+        <p style='margin: 0 0'>Other: {{content.other}}</p>
+        <p style='margin: 0 0'>As Needed: {{content.as_needed}}</p>
+      {{/collection}}
+      </script>
+      <hr />
+      <h2>Noon</h2>
+      <hr />
+      <script type='text/html'>
+      {{#collection contentBinding="ResidentsShow.medicationsController.noon" tagName="ul"}}
+        <h4><strong>{{content.name}}</strong> {{content.strength}} {{content.form}}</h4>
+        <p style='margin: 0 0'>Early Morning: {{content.early_morning}}</p>
+        <p style='margin: 0 0'>Morning: {{content.morning}}</p>
+        <p style='margin: 0 0'>Noon: {{content.noon}}</p>
+        <p style='margin: 0 0'>Evening: {{content.evening}}</p>
+        <p style='margin: 0 0'>Before Bedtime: {{content.before_bedtime}}</p>
+        <p style='margin: 0 0'>Bedtime: {{content.bedtime}}</p>
+        <p style='margin: 0 0'>Other: {{content.other}}</p>
+        <p style='margin: 0 0'>As Needed: {{content.as_needed}}</p>
+      {{/collection}}
+      </script>
 
 
       <hr />
@@ -156,6 +188,14 @@
       last_administered_by: null
       last_administered_at: null
       image_filename: null
+      early_morning: false
+      morning: false
+      noon: false
+      evening: false
+      before_bedtime: false
+      bedtime: false
+      other: false
+      as_needed: false
 
     ResidentsShow.Allergy = SC.Object.extend
       id: null
@@ -182,6 +222,25 @@
 
     ResidentsShow.medicationsController = SC.ArrayProxy.create
       content: []
+      early_morning: []
+      morning: []
+      noon: []
+      evening: []
+      before_bedtime: []
+      bedtime: []
+      other: []
+      as_needed: []
+
+      arrayDidChange: ->
+        @set('early_morning', @filterProperty('early_morning', true))
+        @set('morning', @filterProperty('morning', true))
+        @set('noon', @filterProperty('noon', true))
+        @set('evening', @filterProperty('evening', true))
+        @set('before_bedtime', @filterProperty('before_bedtime', true))
+        @set('bedtime', @filterProperty('bedtime', true))
+        @set('other', @filterProperty('other', true))
+        @set('as_needed', @filterProperty('as_needed', true))
+
       createMedication: (attributes) ->
         this.pushObject ResidentsShow.Medication.create attributes
 
@@ -189,11 +248,6 @@
       content: []
       createAllergy: (attributes) ->
         this.pushObject ResidentsShow.Allergy.create attributes
-
-    ResidentsShow.timesofDayController = SC.ArrayProxy.create
-      content: []
-      createTOD: (title) ->
-        this.pushObject ResidentsShow.TimeOfDay.create({title: title})
 
 
     # views
@@ -208,9 +262,6 @@
     rooms = -> [1,2,3,4,5,6,7,8]
     beds = -> ['Private', 'A','B']
 
-    for tod in ['Early Morning', 'Morning','Noon','Evening','Bedtime','Other']
-      ResidentsShow.timesofDayController.createTOD tod
-
     med_names = -> ["Plavix Oral", "Bentyl", "Albuterol Inhl", "Adalimumab", "Methotrexate (Anti-Rheumatic) Oral", "Prednisone Oral", "Prevacid", "Methotrexate Na (Preserv Free) Inj", "Penicillin G", "Percocet Oral", "Tylenol Oral", "Morphine", "Oxycodone Oral", "Neurontin", "Loratadine Oral", "Omeprazole Oral", "Desipramine", "Amitriptyline Oral", "Ranitidine Oral", "Warfarin"]
     strengths = -> ['5 mg', '10 mg', '25mg', '50 mg']
     forms = -> ['tablet', 'capsule']
@@ -218,6 +269,7 @@
     rx_medical_notes = -> ["Refill send to Episcopo's", "Participant request for a refill at his visit today in the clinic.", "Ordered by Hamilton GI"]
     allergy_names = -> ['penicillins', 'donepezil', 'carbamazepine', 'codeine', 'sulfa drugs']
     allergy_types = -> ['allergen', 'ingredient']
+    true_false = -> [true, false]
 
     # Faker Generate Meds
     for resident_id in [1]
@@ -235,6 +287,14 @@
           last_administered_by: Faker.Name.findName()
           last_administered_at: Date.create("#{Faker.Helpers.randomNumber(80).toString()}").format('{MM}-{dd}-{yyyy}')
           image_filename: 'images/jrs-logo.png'
+          early_morning: Faker.Helpers.randomize(true_false())
+          morning: Faker.Helpers.randomize(true_false())
+          noon: Faker.Helpers.randomize(true_false())
+          evening: Faker.Helpers.randomize(true_false())
+          before_bedtime: Faker.Helpers.randomize(true_false())
+          bedtime: Faker.Helpers.randomize(true_false())
+          other: Faker.Helpers.randomize(true_false())
+          as_needed: Faker.Helpers.randomize(true_false())
 
       for allergy_id in [1..5]
         ResidentsShow.allergiesController.createAllergy
