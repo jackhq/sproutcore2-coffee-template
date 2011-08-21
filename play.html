@@ -49,6 +49,12 @@
 
       <h3>Play Time</h3>
       <script type='text/html'>
+      {{#collection contentBinding="Play.categoriesController" tagName="ul"}}
+        {{content.name}}
+        {{#each content.friends}}
+          {{name}}
+        {{/each}}
+      {{/collection}}
       <h4>Friends</h4>
       {{#collection contentBinding="Play.friendsController" tagName="ul" itemClassBinding="content.hide"}}
         {{content.name}}
