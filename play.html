@@ -50,7 +50,7 @@
       <script type='text/html'>
       {{#view nameBinding="Play.friendsController.name" catBinding="Play.friendsController.cat" }}
         {{view SC.TextField valueBinding="name" placeholder="Enter Name"}}
-        {{view SC.TextField valueBinding="cat" placeholder="Enter Category"}}
+        {{view SC.Select contentBinding="Play.categoriesController" valueBinding="cat"}}
         {{#view SC.Button classBinding="isActive"
           target="Play.friendsController"
           action="createFriend"}}
@@ -60,13 +60,11 @@
       </script>
     </div>
     <div class='one-third column'>
-      <script type='text/html'>      
-
+      <script type='text/html'>
       <h4>Friends</h4>
       {{#collection contentBinding="Play.friendsController" tagName="ul" itemClassBinding="content.hide"}}
         {{content.name}}
       {{/collection}}
-
       </script>
     </div>
     <div class='one-third column'>
@@ -93,6 +91,8 @@
   ================================================== -->
   <script src="javascripts/jquery-1.6.1.min.js" type="text/javascript" charset="utf-8"></script>
   <script src="javascripts/sproutcore-2.0.beta.3.min.js" type="text/javascript" charset="utf-8"></script>
+  <script src="javascripts/select.js" type="text/javascript" charset="utf-8"></script>
+
   <script src="play_app.js" type="text/javascript" charset="utf-8"></script>
 
   <!--

@@ -1,9 +1,8 @@
-cats = ['best','coworker','basic']
-
 Play = SC.Application.create()
 
 Play.Category = SC.Object.extend
-  name: null
+  label: null
+  value: null
   friends: null
 
 Play.Friend = SC.Object.extend
@@ -28,8 +27,10 @@ Play.friendsController = SC.ArrayProxy.create
   best: []
   coworkers: []
   basic: []
+  
   name: null
   cat: null
+  
   arrayDidChange: (item, idx, removedCnt, addedCnt) ->
     @_super(item, idx, removedCnt, addedCnt)
     @set 'best', @filterProperty('category', 'best')
@@ -37,6 +38,7 @@ Play.friendsController = SC.ArrayProxy.create
     @set 'basic', @filterProperty('category', 'basic')
 
   createFriend: ->
+    console.log @get('cat')
     @pushObject(Play.Friend.create
       name: @get 'name'
       category: @get 'cat'
@@ -58,7 +60,8 @@ Play.friendsController.pushObject(Play.Friend.create(name: friend.name, category
 
 ]
 
-Play.categoriesController.pushObject(Play.Category.create(name: cat)) for cat in cats
+cats = ['best','coworker','basic']
+Play.categoriesController.pushObject(Play.Category.create(label: cat, value: cat)) for cat in cats
 
 #Play.friendsController.set('content', store)
 
