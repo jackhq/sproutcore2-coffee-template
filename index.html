@@ -31,6 +31,24 @@
   <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
   <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
   <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  <script type="text/x-handlebars" data-template-name="medication-detail">
+    <div style='width:100%'>
+      <div style='float:left;'>
+        <img {{bindAttr src="content.image_filename"}} style='height:50px;width:50px;'></img>
+      </div>
+      <div style='width: 80%;float:left;margin-left: 15px;'>
+        <h4><strong>{{content.name}}</strong> {{content.strength}} {{content.form}}</h4>
+        <h5>{{content.sig}}</h5>
+        <p style='margin: 3px 0;'>{{content.rx_medical_note}}</p>
+        <p style='margin: 3px 0;'>Last Administered by {{content.last_administered_by}} on {{content.last_administered_at}}</p>
+        <a href=''>add comments</a> | <a href=''>side effects</a> | <a href=''>warnings</a> | <a href=''>add parameter</a> | <a href=''>history</a>
+      </div>
+      <div style='width:5%;float:left;'>
+        YES/NO
+      </div>
+    </div>
+    <div class='clear' />
+  </script>
 
 </head>
 <body>
@@ -62,8 +80,9 @@
       {{/collection}}
       </script>
       <hr />
+      <h2>Early Morning</h2>
       <script type='text/html'>
-      {{#collection contentBinding="ResidentsShow.medicationsController" tagName="ul"}}
+      {{#collection contentBinding="ResidentsShow.medicationsController.early_morning" tagName="ul" templateName="medication-detail"}}
         <div style='width:100%'>
           <div style='float:left;'>
             <img {{bindAttr src="content.image_filename"}} style='height:50px;width:50px;'></img>
@@ -75,14 +94,143 @@
             <p style='margin: 3px 0;'>Last Administered by {{content.last_administered_by}} on {{content.last_administered_at}}</p>
             <a href=''>add comments</a> | <a href=''>side effects</a> | <a href=''>warnings</a> | <a href=''>add parameter</a> | <a href=''>history</a>
           </div>
-          <div style='width:5%;float:left;'>
-            YES/NO
+        </div>
+        <div class='clear' />
+      {{/collection}}
+      </script>
+      <hr />
+      <h2>Morning</h2>
+      <script type='text/html'>
+      {{#collection contentBinding="ResidentsShow.medicationsController.morning" tagName="ul" templateName="medication-detail"}}
+        <div style='width:100%'>
+          <div style='float:left;'>
+            <img {{bindAttr src="content.image_filename"}} style='height:50px;width:50px;'></img>
+          </div>
+          <div style='width: 80%;float:left;margin-left: 15px;'>
+            <h4><strong>{{content.name}}</strong> {{content.strength}} {{content.form}}</h4>
+            <h5>{{content.sig}}</h5>
+            <p style='margin: 3px 0;'>{{content.rx_medical_note}}</p>
+            <p style='margin: 3px 0;'>Last Administered by {{content.last_administered_by}} on {{content.last_administered_at}}</p>
+            <a href=''>add comments</a> | <a href=''>side effects</a> | <a href=''>warnings</a> | <a href=''>add parameter</a> | <a href=''>history</a>
           </div>
         </div>
         <div class='clear' />
       {{/collection}}
       </script>
-
+      <hr />
+      <h2>Noon</h2>
+      <script type='text/html'>
+      {{#collection contentBinding="ResidentsShow.medicationsController.noon" tagName="ul" templateName="medication-detail"}}
+        <div style='width:100%'>
+          <div style='float:left;'>
+            <img {{bindAttr src="content.image_filename"}} style='height:50px;width:50px;'></img>
+          </div>
+          <div style='width: 80%;float:left;margin-left: 15px;'>
+            <h4><strong>{{content.name}}</strong> {{content.strength}} {{content.form}}</h4>
+            <h5>{{content.sig}}</h5>
+            <p style='margin: 3px 0;'>{{content.rx_medical_note}}</p>
+            <p style='margin: 3px 0;'>Last Administered by {{content.last_administered_by}} on {{content.last_administered_at}}</p>
+            <a href=''>add comments</a> | <a href=''>side effects</a> | <a href=''>warnings</a> | <a href=''>add parameter</a> | <a href=''>history</a>
+          </div>
+        </div>
+        <div class='clear' />
+      {{/collection}}
+      </script>
+      <hr />
+      <h2>Evening</h2>
+      <script type='text/html'>
+      {{#collection contentBinding="ResidentsShow.medicationsController.evening" tagName="ul" templateName="medication-detail"}}
+        <div style='width:100%'>
+          <div style='float:left;'>
+            <img {{bindAttr src="content.image_filename"}} style='height:50px;width:50px;'></img>
+          </div>
+          <div style='width: 80%;float:left;margin-left: 15px;'>
+            <h4><strong>{{content.name}}</strong> {{content.strength}} {{content.form}}</h4>
+            <h5>{{content.sig}}</h5>
+            <p style='margin: 3px 0;'>{{content.rx_medical_note}}</p>
+            <p style='margin: 3px 0;'>Last Administered by {{content.last_administered_by}} on {{content.last_administered_at}}</p>
+            <a href=''>add comments</a> | <a href=''>side effects</a> | <a href=''>warnings</a> | <a href=''>add parameter</a> | <a href=''>history</a>
+          </div>
+        </div>
+        <div class='clear' />
+      {{/collection}}
+      </script>
+      <hr />
+      <h2>Before Bedtime</h2>
+      <script type='text/html'>
+      {{#collection contentBinding="ResidentsShow.medicationsController.before_bedtime" tagName="ul" templateName="medication-detail"}}
+        <div style='width:100%'>
+          <div style='float:left;'>
+            <img {{bindAttr src="content.image_filename"}} style='height:50px;width:50px;'></img>
+          </div>
+          <div style='width: 80%;float:left;margin-left: 15px;'>
+            <h4><strong>{{content.name}}</strong> {{content.strength}} {{content.form}}</h4>
+            <h5>{{content.sig}}</h5>
+            <p style='margin: 3px 0;'>{{content.rx_medical_note}}</p>
+            <p style='margin: 3px 0;'>Last Administered by {{content.last_administered_by}} on {{content.last_administered_at}}</p>
+            <a href=''>add comments</a> | <a href=''>side effects</a> | <a href=''>warnings</a> | <a href=''>add parameter</a> | <a href=''>history</a>
+          </div>
+        </div>
+        <div class='clear' />
+      {{/collection}}
+      </script>
+      <hr />
+      <h2>Bedtime</h2>
+      <script type='text/html'>
+      {{#collection contentBinding="ResidentsShow.medicationsController.bedtime" tagName="ul" templateName="medication-detail"}}
+        <div style='width:100%'>
+          <div style='float:left;'>
+            <img {{bindAttr src="content.image_filename"}} style='height:50px;width:50px;'></img>
+          </div>
+          <div style='width: 80%;float:left;margin-left: 15px;'>
+            <h4><strong>{{content.name}}</strong> {{content.strength}} {{content.form}}</h4>
+            <h5>{{content.sig}}</h5>
+            <p style='margin: 3px 0;'>{{content.rx_medical_note}}</p>
+            <p style='margin: 3px 0;'>Last Administered by {{content.last_administered_by}} on {{content.last_administered_at}}</p>
+            <a href=''>add comments</a> | <a href=''>side effects</a> | <a href=''>warnings</a> | <a href=''>add parameter</a> | <a href=''>history</a>
+          </div>
+        </div>
+        <div class='clear' />
+      {{/collection}}
+      </script>
+      <hr />
+      <h2>Other</h2>
+      <script type='text/html'>
+      {{#collection contentBinding="ResidentsShow.medicationsController.other" tagName="ul" templateName="medication-detail"}}
+        <div style='width:100%'>
+          <div style='float:left;'>
+            <img {{bindAttr src="content.image_filename"}} style='height:50px;width:50px;'></img>
+          </div>
+          <div style='width: 80%;float:left;margin-left: 15px;'>
+            <h4><strong>{{content.name}}</strong> {{content.strength}} {{content.form}}</h4>
+            <h5>{{content.sig}}</h5>
+            <p style='margin: 3px 0;'>{{content.rx_medical_note}}</p>
+            <p style='margin: 3px 0;'>Last Administered by {{content.last_administered_by}} on {{content.last_administered_at}}</p>
+            <a href=''>add comments</a> | <a href=''>side effects</a> | <a href=''>warnings</a> | <a href=''>add parameter</a> | <a href=''>history</a>
+          </div>
+        </div>
+        <div class='clear' />
+      {{/collection}}
+      </script>
+      <hr />
+      <h2>As Needed</h2>
+      <script type='text/html'>
+      {{#collection contentBinding="ResidentsShow.medicationsController.as_needed" tagName="ul" templateName="medication-detail"}}
+        <div style='width:100%'>
+          <div style='float:left;'>
+            <img {{bindAttr src="content.image_filename"}} style='height:50px;width:50px;'></img>
+          </div>
+          <div style='width: 80%;float:left;margin-left: 15px;'>
+            <h4><strong>{{content.name}}</strong> {{content.strength}} {{content.form}}</h4>
+            <h5>{{content.sig}}</h5>
+            <p style='margin: 3px 0;'>{{content.rx_medical_note}}</p>
+            <p style='margin: 3px 0;'>Last Administered by {{content.last_administered_by}} on {{content.last_administered_at}}</p>
+            <a href=''>add comments</a> | <a href=''>side effects</a> | <a href=''>warnings</a> | <a href=''>add parameter</a> | <a href=''>history</a>
+          </div>
+        </div>
+        <div class='clear' />
+      {{/collection}}
+      </script>
 
       <hr />
       <p>Patient Info Here</p>
@@ -156,6 +304,15 @@
       last_administered_by: null
       last_administered_at: null
       image_filename: null
+      early_morning: false
+      morning: false
+      noon: false
+      evening: false
+      before_bedtime: false
+      bedtime: false
+      other: false
+      as_needed: false
+      view_only: true
 
     ResidentsShow.Allergy = SC.Object.extend
       id: null
@@ -182,6 +339,26 @@
 
     ResidentsShow.medicationsController = SC.ArrayProxy.create
       content: []
+      early_morning: []
+      morning: []
+      noon: []
+      evening: []
+      before_bedtime: []
+      bedtime: []
+      other: []
+      as_needed: []
+
+      arrayDidChange: (item, idx, removeCnt, addedCnt) ->
+        @_super(item, idx, removeCnt, addedCnt)
+        @set('early_morning', @filterProperty('early_morning', true))
+        @set('morning', @filterProperty('morning', true))
+        @set('noon', @filterProperty('noon', true))
+        @set('evening', @filterProperty('evening', true))
+        @set('before_bedtime', @filterProperty('before_bedtime', true))
+        @set('bedtime', @filterProperty('bedtime', true))
+        @set('other', @filterProperty('other', true))
+        @set('as_needed', @filterProperty('as_needed', true))
+
       createMedication: (attributes) ->
         this.pushObject ResidentsShow.Medication.create attributes
 
@@ -190,14 +367,10 @@
       createAllergy: (attributes) ->
         this.pushObject ResidentsShow.Allergy.create attributes
 
-    ResidentsShow.timesofDayController = SC.ArrayProxy.create
-      content: []
-      createTOD: (title) ->
-        this.pushObject ResidentsShow.TimeOfDay.create({title: title})
-
 
     # views
-
+    class ResidentsShow.MedicationDetailView extends SC.View
+      templateName: 'medication-detail'
 
 
     # Random Units
@@ -208,9 +381,6 @@
     rooms = -> [1,2,3,4,5,6,7,8]
     beds = -> ['Private', 'A','B']
 
-    for tod in ['Early Morning', 'Morning','Noon','Evening','Bedtime','Other']
-      ResidentsShow.timesofDayController.createTOD tod
-
     med_names = -> ["Plavix Oral", "Bentyl", "Albuterol Inhl", "Adalimumab", "Methotrexate (Anti-Rheumatic) Oral", "Prednisone Oral", "Prevacid", "Methotrexate Na (Preserv Free) Inj", "Penicillin G", "Percocet Oral", "Tylenol Oral", "Morphine", "Oxycodone Oral", "Neurontin", "Loratadine Oral", "Omeprazole Oral", "Desipramine", "Amitriptyline Oral", "Ranitidine Oral", "Warfarin"]
     strengths = -> ['5 mg', '10 mg', '25mg', '50 mg']
     forms = -> ['tablet', 'capsule']
@@ -218,6 +388,7 @@
     rx_medical_notes = -> ["Refill send to Episcopo's", "Participant request for a refill at his visit today in the clinic.", "Ordered by Hamilton GI"]
     allergy_names = -> ['penicillins', 'donepezil', 'carbamazepine', 'codeine', 'sulfa drugs']
     allergy_types = -> ['allergen', 'ingredient']
+    true_false = -> [true, false]
 
     # Faker Generate Meds
     for resident_id in [1]
@@ -235,6 +406,14 @@
           last_administered_by: Faker.Name.findName()
           last_administered_at: Date.create("#{Faker.Helpers.randomNumber(80).toString()}").format('{MM}-{dd}-{yyyy}')
           image_filename: 'images/jrs-logo.png'
+          early_morning: Faker.Helpers.randomize(true_false())
+          morning: Faker.Helpers.randomize(true_false())
+          noon: Faker.Helpers.randomize(true_false())
+          evening: Faker.Helpers.randomize(true_false())
+          before_bedtime: Faker.Helpers.randomize(true_false())
+          bedtime: Faker.Helpers.randomize(true_false())
+          other: Faker.Helpers.randomize(true_false())
+          as_needed: Faker.Helpers.randomize(true_false())
 
       for allergy_id in [1..5]
         ResidentsShow.allergiesController.createAllergy
