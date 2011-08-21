@@ -45,20 +45,32 @@
   <!-- Delete everything in this .container and get started on your own site! -->
 
   <div class="container">
-    <div class="two-thirds columns">
-
+    <div class="one-third column">
       <h3>Play Time</h3>
       <script type='text/html'>
-      {{#collection contentBinding="Play.categoriesController" tagName="ul"}}
-        {{content.name}}
-        {{#each content.friends}}
-          {{name}}
-        {{/each}}
-      {{/collection}}
+      {{#view nameBinding="Play.friendsController.name" catBinding="Play.friendsController.cat" }}
+        {{view SC.TextField valueBinding="name" placeholder="Enter Name"}}
+        {{view SC.TextField valueBinding="cat" placeholder="Enter Category"}}
+        {{#view SC.Button classBinding="isActive"
+          target="Play.friendsController"
+          action="createFriend"}}
+          Add Friend
+        {{/view}}
+      {{/view}}
+      </script>
+    </div>
+    <div class='one-third column'>
+      <script type='text/html'>      
+
       <h4>Friends</h4>
       {{#collection contentBinding="Play.friendsController" tagName="ul" itemClassBinding="content.hide"}}
         {{content.name}}
       {{/collection}}
+
+      </script>
+    </div>
+    <div class='one-third column'>
+      <script type='text/html'>      
       <h4>Best Friends</h4>
       {{#collection contentBinding="Play.friendsController.best" tagName="ul"}}
         {{content.name}}

@@ -18,8 +18,6 @@
     content: [],
     arrayDidChange: function(item, idx, removedCnt, addedCnt) {
       this._super(item, idx, removedCnt, addedCnt);
-      console.log(item);
-      console.log(idx);
       if ((item != null) && item.length > 0 && item[idx].friends === null) {
         if (item[idx].name === 'best') {
           item[idx].friends = Play.friendsController.filterProperty('category', 'best');
@@ -28,9 +26,8 @@
           item[idx].friends = Play.friendsController.filterProperty('category', 'coworker');
         }
         if (item[idx].name === 'basic') {
-          item[idx].friends = Play.friendsController.filterProperty('category', 'basic');
+          return item[idx].friends = Play.friendsController.filterProperty('category', 'basic');
         }
-        return console.log('Added Friends...');
       }
     }
   });
@@ -39,6 +36,8 @@
     best: [],
     coworkers: [],
     basic: [],
+    name: null,
+    cat: null,
     arrayDidChange: function(item, idx, removedCnt, addedCnt) {
       this._super(item, idx, removedCnt, addedCnt);
       this.set('best', this.filterProperty('category', 'best'));
@@ -46,7 +45,12 @@
       return this.set('basic', this.filterProperty('category', 'basic'));
     },
     createFriend: function() {
-      return this.pushObject(Play.Friend.create());
+      this.pushObject(Play.Friend.create({
+        name: this.get('name'),
+        category: this.get('cat')
+      }));
+      this.set('name', '');
+      return this.set('cat', '');
     }
   });
   window.Play = Play;
