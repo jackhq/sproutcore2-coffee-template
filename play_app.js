@@ -10,7 +10,12 @@
     content: [],
     best: [],
     coworkers: [],
-    basic: []
+    basic: [],
+    arrayDidChange: function() {
+      this.set('best', this.filterProperty('category', 'best'));
+      this.set('coworkers', this.filterProperty('category', 'coworker'));
+      return this.set('basic', this.filterProperty('category', 'basic'));
+    }
   });
   window.Play = Play;
   _ref = [
@@ -19,10 +24,19 @@
       category: 'best'
     }, {
       name: 'Dick',
-      category: 'coworker'
+      category: 'best'
     }, {
       name: 'Harry',
+      category: 'best'
+    }, {
+      name: 'Jim',
       category: 'basic'
+    }, {
+      name: 'Mary',
+      category: 'basic'
+    }, {
+      name: 'Sue',
+      category: 'coworker'
     }
   ];
   for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -32,7 +46,8 @@
       category: friend.category
     }));
   }
-  Play.friendsController.set('best', Play.friendsController.filterProperty('category', 'best'));
-  Play.friendsController.set('coworkers', Play.friendsController.filterProperty('category', 'coworker'));
-  Play.friendsController.set('basic', Play.friendsController.filterProperty('category', 'basic'));
+  Play.FooView = SC.CollectionView.extend({
+    contentBinding: SC.Binding.from('Play.friendsController'),
+    tagName: 'ul'
+  });
 }).call(this);
