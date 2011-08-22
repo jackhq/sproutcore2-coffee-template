@@ -50,6 +50,22 @@
     <div class='clear' />
   </script>
 
+
+  <script type="text/x-handlebars" data-template-name="resident-detail">
+    <div style='width:100%'>
+      <div style='float:left;'>
+        <img src='x' style='height:50px;width:50px;'></img>
+        <div>Current Status: <br/> LTC</div>
+      </div>
+      <div style='width: 80%;float:right;'>
+        <h4>{{content.name}} ({{content.dob}}) {{content.gender}}</h4>
+        <h5>{{content.unit}} - {{content.wing}} - Room#&nbsp;{{content.room}}  {{content.bed}}</h5>
+        <h5>Primary Dx: Congestive Heart Failure(178.00)</h5>
+        <h5>Secondary Dx: Asthmal(299.00)</h5>
+      </div>
+    </div>
+  </script>
+
 </head>
 <body>
 
@@ -64,20 +80,7 @@
     <div class="two-thirds column">
       <h3>Resident Medication Administration Record</h3>
       <script type='text/html'>
-      {{#collection contentBinding="ResidentsShow.residentsController" tagName="ul"}}
-        <div style='width:100%'>
-          <div style='float:left;'>
-            <img src='x' style='height:50px;width:50px;'></img>
-            <div>Current Status: <br/> LTC</div>
-          </div>
-          <div style='width: 80%;float:right;'>
-            <h4>{{content.name}} ({{content.dob}}) {{content.gender}}</h4>
-            <h5>{{content.unit}} - {{content.wing}} - Room#&nbsp;{{content.room}}  {{content.bed}}</h5>
-            <h5>Primary Dx: Congestive Heart Failure(178.00)</h5>
-            <h5>Secondary Dx: Asthmal(299.00)</h5>
-          </div>
-        </div>
-      {{/collection}}
+      {{collection ResidentsShow.ResidentCollectionView contentBinding="ResidentsShow.residentsController"}}
       </script>
       <hr />
 
@@ -270,6 +273,13 @@
 
     ResidentsShow.MedicationCollectionView = SC.CollectionView.extend
       itemViewClass: ResidentsShow.MedicationDetailView
+      tagName: 'ul'
+
+    ResidentsShow.ResidentDetailView = SC.View.extend
+      templateName: 'resident-detail'
+
+    ResidentsShow.ResidentCollectionView = SC.CollectionView.extend
+      itemViewClass: ResidentsShow.ResidentDetailView
       tagName: 'ul'
 
     # Random Units
