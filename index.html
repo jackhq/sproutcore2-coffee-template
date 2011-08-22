@@ -76,7 +76,7 @@
   <script type="text/x-handlebars" data-template-name="time-taken-detail">
     {{view SC.Checkbox title="Hide/Show" valueBinding="content.hide"}}
     <h2>{{content.title}}</h2>
-    {{collection ResidentsShow.MedicationCollectionView contentBinding="content.medications" itemClassBinding="content.hide"}}
+    {{collection ResidentsShow.MedicationCollectionView classBinding="parentView.content.hide" contentBinding="content.medications"}}
     <hr />
   </script>
 
@@ -193,6 +193,7 @@
 
     ResidentsShow.TimeTaken = SC.Object.extend
       title: null
+      medications: []
       hide: false
       editMode: false
 
