@@ -3,13 +3,31 @@
   unitsData = [
     {
       name: 'Unit A',
-      wings: ['Wing 1', 'Wing 2']
+      wings: [
+        {
+          name: 'Wing 1'
+        }, {
+          name: 'Wing 2'
+        }
+      ]
     }, {
       name: 'Unit B',
-      wings: ['Wing 3', 'Wing 4']
+      wings: [
+        {
+          name: 'Wing 3'
+        }, {
+          name: 'Wing 4'
+        }
+      ]
     }, {
       name: 'Unit C',
-      wings: ['Wing 5', 'Wing 6']
+      wings: [
+        {
+          name: 'Wing 5'
+        }, {
+          name: 'Wing 6'
+        }
+      ]
     }
   ];
   residentsData = [
@@ -63,7 +81,11 @@
     bed: null
   });
   Residents.Unit = SC.Object.extend({
-    wings: [],
+    wings: [
+      {
+        hide: false
+      }
+    ],
     unit_name: null
   });
   Residents.residentsController = SC.ArrayProxy.create({
@@ -102,12 +124,12 @@
       }));
     }
   });
-  Residents.unitsView = SC.CollectionView.extend({
+  Residents.UnitsView = SC.CollectionView.extend({
     contentBinding: 'Residents.unitsController',
     tagName: 'ul'
   });
-  Residents.residentsView = SC.CollectionView.extend({
-    contentBinding: 'Residents.residentsController',
+  Residents.UnitsFilterView = SC.Checkbox.extend({
+    contentBinding: 'Residents.unitsController',
     tagName: 'ul'
   });
   residents = (function() {

@@ -25,6 +25,9 @@
   <link rel="stylesheet" href="stylesheets/base.css">
   <link rel="stylesheet" href="stylesheets/skeleton.css">
   <link rel="stylesheet" href="stylesheets/layout.css">
+  <style type='text/css'>
+    .hide { display: none;}
+  </style>
 
   <!-- Favicons
   ================================================== -->
@@ -35,11 +38,13 @@
 </head>
 <body>
   <div class="container">
+
+    <!-- Residents
+    ============================================ -->
     <div id='residents' class="two-thirds column">
       <h1>Residents</h1>
       <script type="text/html">
-
-        {{#collection Residents.unitsView}}
+        {{#collection Residents.UnitsView}}
           <h4>{{content.unit_name}}</h4>
           <ul>
           {{#content.residents}}
@@ -52,11 +57,16 @@
       </script>
     </div>
 
+    <!-- Residents Filter
+    ============================================ -->
     <div id='residents-filter' class="one-thirds column">
       <h1>Filter</h1>
       <script type="text/html">
-        {{#collection Residents.unitsView}}
-          <h5>{{content.unit_name}}</h5>
+        {{#collection Residents.UnitsView}}}
+          {{view Residents.UnitsFilterView value="checked" valueBinding="content.wings" title=content.unit_name}}
+          {{#collection contentBinding="content.wings" tagName="ul" itemClassBinding="content.hide"}}
+            {{content.name}}
+          {{/collection}}
         {{/collection}}
       </script>
     </div>
