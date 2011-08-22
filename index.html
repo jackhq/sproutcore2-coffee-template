@@ -69,8 +69,6 @@
 </head>
 <body>
 
-
-
   <!-- Primary Page Layout
   ================================================== -->
 
@@ -171,7 +169,6 @@
   <!-- JS
   ================================================== -->
   <script src="javascripts/jquery-1.6.1.min.js" type="text/javascript" charset="utf-8"></script>
-
   <script src="javascripts/sugar-0.9.4.min.js" type="text/javascript" charset="utf-8"></script>
   <script src="javascripts/tabs.js"></script>
   <script src="javascripts/sproutcore-2.0.beta.3.js" type="text/javascript" charset="utf-8"></script>
@@ -229,34 +226,18 @@
 
     ResidentsShow.medicationsController = SC.ArrayProxy.create
       content: []
-      early_morning: []
-      morning: []
-      noon: []
-      evening: []
-      before_bedtime: []
-      bedtime: []
-      other: []
-      as_needed: []
 
       arrayDidChange: (item, idx, removeCnt, addedCnt) ->
         @_super(item, idx, removeCnt, addedCnt)
-        @set('early_morning', @filterProperty('early_morning', true))
-        @set('morning', @filterProperty('morning', true))
-        @set('noon', @filterProperty('noon', true))
-        @set('evening', @filterProperty('evening', true))
-        @set('before_bedtime', @filterProperty('before_bedtime', true))
-        @set('bedtime', @filterProperty('bedtime', true))
-        @set('other', @filterProperty('other', true))
-        @set('as_needed', @filterProperty('as_needed', true))
+        times_taken = ['early_morning', 'morning', 'noon', 'evening', 'before_bedtime', 'bedtime', 'other', 'as_needed']
+        for time_taken in times_taken
+          @set(time_taken, @filterProperty(time_taken, true))
 
-      createMedication: (attributes) ->
-        this.pushObject ResidentsShow.Medication.create attributes
+      createMedication: (attributes) -> @pushObject ResidentsShow.Medication.create attributes
 
     ResidentsShow.allergiesController = SC.ArrayProxy.create
       content: []
-      createAllergy: (attributes) ->
-        this.pushObject ResidentsShow.Allergy.create attributes
-
+      createAllergy: (attributes) -> @pushObject ResidentsShow.Allergy.create attributes
 
     # views
     ResidentsShow.MedicationDetailView = SC.View.extend
