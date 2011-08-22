@@ -225,16 +225,7 @@
     # Controllers
     ResidentsShow.residentsController = SC.ArrayProxy.create
       content: []
-      createResident: (id, name, dob, gender, unit, wing, room, bed) ->
-        this.pushObject ResidentsShow.Resident.create
-          id: id
-          name: name
-          dob: dob
-          gender: gender
-          unit: unit
-          wing: wing
-          room: room
-          bed: bed
+      createResident: (attributes) -> @pushObject ResidentsShow.Resident.create(attributes)
 
     ResidentsShow.medicationsController = SC.ArrayProxy.create
       content: []
@@ -301,7 +292,15 @@
 
     # Faker Generate Meds
     for resident_id in [1]
-      ResidentsShow.residentsController.createResident resident_id, Faker.Name.findName(), Date.create("#{Faker.Helpers.randomNumber(80).toString()} years ago").format('{MM}-{dd}-{yyyy}'), Faker.Helpers.randomize(genders()), Faker.Helpers.randomize(units()), Faker.Helpers.randomize(wings()), Faker.Helpers.randomize(rooms()), Faker.Helpers.randomize(beds())
+      ResidentsShow.residentsController.createResident 
+        id: resident_id
+        name: Faker.Name.findName()
+        dob: Date.create("#{Faker.Helpers.randomNumber(80).toString()} years ago").format('{MM}-{dd}-{yyyy}')
+        gender: Faker.Helpers.randomize(genders())
+        unit: Faker.Helpers.randomize(units())
+        wing: Faker.Helpers.randomize(wings())
+        room: Faker.Helpers.randomize(rooms())
+        bde: Faker.Helpers.randomize(beds())
 
       for med_id in [1..20]
         ResidentsShow.medicationsController.createMedication
