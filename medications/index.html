@@ -34,7 +34,9 @@
 
   <style type="text/css">
     .hide { display: none; }
-
+    .right { float: right; }
+    .left { float: left; }
+    .clear { clear: both; }
     .attribute{ display: block; }
     .attribute-edit{ display: none; }
     .editable .attribute{ display: none; }
@@ -80,9 +82,10 @@
   </script>
 
   <script type="text/x-handlebars" data-template-name="time-taken-detail">
-    {{view SC.Checkbox title="Hide" valueBinding="content.hide"}}
-    {{view SC.Checkbox title="Edit Mode" valueBinding="content.editable"}}
-    <h2>{{content.title}} ({{content.medication_count}})</h2>
+    {{view ResidentsShow.EditModeView title="Edit Mode"}}
+    <h2 class='left'>{{content.title}} ({{content.medication_count}})</h2>
+    {{view ResidentsShow.HideView title="Hide"}}
+    <div class="clear"></div>
     {{collection ResidentsShow.MedicationCollectionView classBinding="parentView.content.hide parentView.content.editable" contentBinding="content.medications"}}
     <hr />
   </script>

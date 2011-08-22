@@ -43,7 +43,7 @@
     title: null,
     medications: [],
     hide: false,
-    editMode: false,
+    editable: false,
     medication_count: SC.computed(function() {
       return this.medications.length;
     })
@@ -63,17 +63,21 @@
   ResidentsShow.medicationsController = SC.ArrayProxy.create({
     content: [],
     arrayDidChange: function(item, idx, removeCnt, addedCnt) {
-      var _a, _b, _c, time_taken, times_taken;
+      var _a, _b, _c, _d, _e, _f, _g, state, states, time_taken, times_taken;
       this._super(item, idx, removeCnt, addedCnt);
       times_taken = ['early_morning', 'morning', 'noon', 'evening', 'before_bedtime', 'bedtime', 'other', 'as_needed'];
+      states = ['current', 'morning', 'on_hold', 'discontinued'];
       _b = times_taken;
       for (_a = 0, _c = _b.length; _a < _c; _a++) {
         time_taken = _b[_a];
         this.set(time_taken, this.filterProperty(time_taken, true));
       }
-      this.set('current', this.filterProperty('state', 'current'));
-      this.set('on_hold', this.filterProperty('state', 'on_hold'));
-      return this.set('discontinued', this.filterProperty('state', 'discontinued'));
+      _d = []; _f = states;
+      for (_e = 0, _g = _f.length; _e < _g; _e++) {
+        state = _f[_e];
+        _d.push(this.set(state, this.filterProperty('state', state)));
+      }
+      return _d;
     },
     createMedication: function(attributes) {
       return this.pushObject(ResidentsShow.Medication.create(attributes));
@@ -105,6 +109,14 @@
   ResidentsShow.TimesTakenCollectionView = SC.CollectionView.extend({
     itemViewClass: ResidentsShow.TimeTakenDetailView,
     tagName: 'ul'
+  });
+  ResidentsShow.EditModeView = SC.Checkbox.extend({
+    valueBinding: "parentView.content.editable",
+    classNames: 'right'
+  });
+  ResidentsShow.HideView = SC.Checkbox.extend({
+    valueBinding: "parentView.content.hide",
+    classNames: 'left'
   });
   genders = function() {
     return ["M", "F"];

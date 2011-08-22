@@ -74,11 +74,11 @@ ResidentsShow.medicationsController = SC.ArrayProxy.create
   arrayDidChange: (item, idx, removeCnt, addedCnt) ->
     @_super(item, idx, removeCnt, addedCnt)
     times_taken = ['early_morning', 'morning', 'noon', 'evening', 'before_bedtime', 'bedtime', 'other', 'as_needed']
+    states = ['current', 'morning', 'on_hold', 'discontinued']
     for time_taken in times_taken
       @set(time_taken, @filterProperty(time_taken, true))
-    @set('current', @filterProperty('state', 'current'))
-    @set('on_hold', @filterProperty('state', 'on_hold'))
-    @set('discontinued', @filterProperty('state', 'discontinued'))
+    for state in states
+      @set(state, @filterProperty('state', state))
 
   createMedication: (attributes) -> @pushObject ResidentsShow.Medication.create attributes
 
@@ -111,6 +111,14 @@ ResidentsShow.TimeTakenDetailView = SC.View.extend
 ResidentsShow.TimesTakenCollectionView = SC.CollectionView.extend
   itemViewClass: ResidentsShow.TimeTakenDetailView
   tagName: 'ul'
+
+ResidentsShow.EditModeView = SC.Checkbox.extend
+  valueBinding: "parentView.content.editable"
+  classNames: 'right'
+
+ResidentsShow.HideView = SC.Checkbox.extend
+  valueBinding: "parentView.content.hide"
+  classNames: 'left'
 
 #############
 # Mock Data #
