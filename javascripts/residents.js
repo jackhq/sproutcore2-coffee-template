@@ -81,12 +81,9 @@
     bed: null
   });
   Residents.Unit = SC.Object.extend({
-    wings: [
-      {
-        hide: false
-      }
-    ],
-    unit_name: null
+    wings: [],
+    unit_name: null,
+    hide: false
   });
   Residents.residentsController = SC.ArrayProxy.create({
     content: [],
@@ -124,11 +121,15 @@
       }));
     }
   });
+  Residents.ResidentsView = SC.CollectionView.extend({
+    contentBinding: 'Residents.unitsController',
+    tagName: 'ul'
+  });
   Residents.UnitsView = SC.CollectionView.extend({
     contentBinding: 'Residents.unitsController',
     tagName: 'ul'
   });
-  Residents.UnitsFilterView = SC.Checkbox.extend({
+  Residents.FilterView = SC.Checkbox.extend({
     contentBinding: 'Residents.unitsController',
     tagName: 'ul'
   });

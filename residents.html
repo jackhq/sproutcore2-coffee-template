@@ -44,7 +44,7 @@
     <div id='residents' class="two-thirds column">
       <h1>Residents</h1>
       <script type="text/html">
-        {{#collection Residents.UnitsView}}
+        {{#collection Residents.ResidentsView itemClassBinding="content.hide"}}
           <h4>{{content.unit_name}}</h4>
           <ul>
           {{#content.residents}}
@@ -63,10 +63,7 @@
       <h1>Filter</h1>
       <script type="text/html">
         {{#collection Residents.UnitsView}}}
-          {{view Residents.UnitsFilterView value="checked" valueBinding="content.wings" title=content.unit_name}}
-          {{#collection contentBinding="content.wings" tagName="ul" itemClassBinding="content.hide"}}
-            {{content.name}}
-          {{/collection}}
+          {{view Residents.FilterView value="checked" valueBinding="content.hide" title=content.unit_name}}
         {{/collection}}
       </script>
     </div>
