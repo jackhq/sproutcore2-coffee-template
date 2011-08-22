@@ -31,6 +31,13 @@
   <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
   <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
   <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+
+  <style type="text/css">
+    .hide { display: none; }
+    .edit-buttons { display: none; }
+    .edit-mode .edit-buttons { display: block; }
+  </style>
+
   <script type="text/x-handlebars" data-template-name="medication-detail">
     <div style='width:100%'>
       <div style='float:left;'>
@@ -43,7 +50,7 @@
         <p style='margin: 3px 0;'>Last Administered by {{content.last_administered_by}} on {{content.last_administered_at}}</p>
         <a href=''>add comments</a> | <a href=''>side effects</a> | <a href=''>warnings</a> | <a href=''>add parameter</a> | <a href=''>history</a>
       </div>
-      <div style='width:5%;float:left;'>
+      <div class="edit-buttons" style='width:5%;float:left;'>
         YES/NO
       </div>
     </div>
@@ -66,10 +73,15 @@
     </div>
   </script>
 
+  <script type="text/x-handlebars" data-template-name="time-taken-detail">
+    {{view SC.Checkbox title="Hide/Show" valueBinding="content.hide"}}
+    <h2>{{content.title}}</h2>
+    {{collection ResidentsShow.MedicationCollectionView contentBinding="content.medications" itemClassBinding="content.hide"}}
+    <hr />
+  </script>
+
 </head>
 <body>
-
-
 
   <!-- Primary Page Layout
   ================================================== -->
@@ -84,51 +96,8 @@
       </script>
       <hr />
 
-      <h2>Early Morning</h2>
       <script type='text/html'>
-      {{collection ResidentsShow.MedicationCollectionView contentBinding="ResidentsShow.medicationsController.early_morning"}}
-      </script>
-      <hr />
-
-      <h2>Morning</h2>
-      <script type='text/html'>
-      {{collection ResidentsShow.MedicationCollectionView contentBinding="ResidentsShow.medicationsController.morning"}}
-      </script>
-      <hr />
-
-      <h2>Noon</h2>
-      <script type='text/html'>
-      {{collection ResidentsShow.MedicationCollectionView contentBinding="ResidentsShow.medicationsController.noon"}}
-      </script>
-      <hr />
-
-      <h2>Evening</h2>
-      <script type='text/html'>
-      {{collection ResidentsShow.MedicationCollectionView contentBinding="ResidentsShow.medicationsController.evening"}}
-      </script>
-      <hr />
-
-      <h2>Before Bedtime</h2>
-      <script type='text/html'>
-      {{collection ResidentsShow.MedicationCollectionView contentBinding="ResidentsShow.medicationsController.before_bedtime"}}
-      </script>
-      <hr />
-
-      <h2>Bedtime</h2>
-      <script type='text/html'>
-      {{collection ResidentsShow.MedicationCollectionView contentBinding="ResidentsShow.medicationsController.bedtime"}}
-      </script>
-      <hr />
-
-      <h2>Other</h2>
-      <script type='text/html'>
-      {{collection ResidentsShow.MedicationCollectionView contentBinding="ResidentsShow.medicationsController.other"}}
-      </script>
-      <hr />
-
-      <h2>As Needed</h2>
-      <script type='text/html'>
-      {{collection ResidentsShow.MedicationCollectionView contentBinding="ResidentsShow.medicationsController.as_needed"}}
+        {{collection ResidentsShow.TimesTakenCollectionView contentBinding="ResidentsShow.timesTakenController"}}
       </script>
 
       <hr />
@@ -171,7 +140,6 @@
   <!-- JS
   ================================================== -->
   <script src="javascripts/jquery-1.6.1.min.js" type="text/javascript" charset="utf-8"></script>
-
   <script src="javascripts/sugar-0.9.4.min.js" type="text/javascript" charset="utf-8"></script>
   <script src="javascripts/tabs.js"></script>
   <script src="javascripts/sproutcore-2.0.beta.3.js" type="text/javascript" charset="utf-8"></script>
@@ -212,6 +180,7 @@
       other: false
       as_needed: false
       view_only: true
+      editMode: false
 
     ResidentsShow.Allergy = SC.Object.extend
       id: null
@@ -222,50 +191,38 @@
     ResidentsShow.TimeOfDay = SC.Object.extend
       title: null
 
+    ResidentsShow.TimeTaken = SC.Object.extend
+      title: null
+      hide: false
+      editMode: false
+
     # Controllers
     ResidentsShow.residentsController = SC.ArrayProxy.create
       content: []
-      createResident: (id, name, dob, gender, unit, wing, room, bed) ->
-        this.pushObject ResidentsShow.Resident.create
-          id: id
-          name: name
-          dob: dob
-          gender: gender
-          unit: unit
-          wing: wing
-          room: room
-          bed: bed
+      createResident: (attributes) -> @pushObject ResidentsShow.Resident.create(attributes)
+
+    ResidentsShow.timesTakenController = SC.ArrayProxy.create
+      content: []
+      create: (attributes) -> @pushObject ResidentsShow.TimeTaken.create attributes
+
+
+
 
     ResidentsShow.medicationsController = SC.ArrayProxy.create
       content: []
-      early_morning: []
-      morning: []
-      noon: []
-      evening: []
-      before_bedtime: []
-      bedtime: []
-      other: []
-      as_needed: []
 
       arrayDidChange: (item, idx, removeCnt, addedCnt) ->
         @_super(item, idx, removeCnt, addedCnt)
-        @set('early_morning', @filterProperty('early_morning', true))
-        @set('morning', @filterProperty('morning', true))
-        @set('noon', @filterProperty('noon', true))
-        @set('evening', @filterProperty('evening', true))
-        @set('before_bedtime', @filterProperty('before_bedtime', true))
-        @set('bedtime', @filterProperty('bedtime', true))
-        @set('other', @filterProperty('other', true))
-        @set('as_needed', @filterProperty('as_needed', true))
+        times_taken = ['early_morning', 'morning', 'noon', 'evening', 'before_bedtime', 'bedtime', 'other', 'as_needed']
+        for time_taken in times_taken
+          @set(time_taken, @filterProperty(time_taken, true))
 
-      createMedication: (attributes) ->
-        this.pushObject ResidentsShow.Medication.create attributes
+      createMedication: (attributes) -> @pushObject ResidentsShow.Medication.create attributes
+
 
     ResidentsShow.allergiesController = SC.ArrayProxy.create
       content: []
-      createAllergy: (attributes) ->
-        this.pushObject ResidentsShow.Allergy.create attributes
-
+      createAllergy: (attributes) -> @pushObject ResidentsShow.Allergy.create attributes
 
     # views
     ResidentsShow.MedicationDetailView = SC.View.extend
@@ -280,6 +237,13 @@
 
     ResidentsShow.ResidentCollectionView = SC.CollectionView.extend
       itemViewClass: ResidentsShow.ResidentDetailView
+      tagName: 'ul'
+
+    ResidentsShow.TimeTakenDetailView = SC.View.extend
+      templateName: 'time-taken-detail'
+
+    ResidentsShow.TimesTakenCollectionView = SC.CollectionView.extend
+      itemViewClass: ResidentsShow.TimeTakenDetailView
       tagName: 'ul'
 
     # Random Units
@@ -299,9 +263,19 @@
     allergy_types = -> ['allergen', 'ingredient']
     true_false = -> [true, false]
 
+    times_taken = ['early_morning', 'morning', 'noon', 'evening', 'before_bedtime', 'bedtime', 'other', 'as_needed']
+
     # Faker Generate Meds
     for resident_id in [1]
-      ResidentsShow.residentsController.createResident resident_id, Faker.Name.findName(), Date.create("#{Faker.Helpers.randomNumber(80).toString()} years ago").format('{MM}-{dd}-{yyyy}'), Faker.Helpers.randomize(genders()), Faker.Helpers.randomize(units()), Faker.Helpers.randomize(wings()), Faker.Helpers.randomize(rooms()), Faker.Helpers.randomize(beds())
+      ResidentsShow.residentsController.createResident 
+        id: resident_id
+        name: Faker.Name.findName()
+        dob: Date.create("#{Faker.Helpers.randomNumber(80).toString()} years ago").format('{MM}-{dd}-{yyyy}')
+        gender: Faker.Helpers.randomize(genders())
+        unit: Faker.Helpers.randomize(units())
+        wing: Faker.Helpers.randomize(wings())
+        room: Faker.Helpers.randomize(rooms())
+        bde: Faker.Helpers.randomize(beds())
 
       for med_id in [1..20]
         ResidentsShow.medicationsController.createMedication
@@ -324,6 +298,11 @@
           other: Faker.Helpers.randomize(true_false())
           as_needed: Faker.Helpers.randomize(true_false())
 
+      for time_taken in times_taken
+        ResidentsShow.timesTakenController.create
+          title: time_taken
+          medications: ResidentsShow.medicationsController.filterProperty(time_taken, true)
+ 
       for allergy_id in [1..5]
         ResidentsShow.allergiesController.createAllergy
           id: allergy_id
