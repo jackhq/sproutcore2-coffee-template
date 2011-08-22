@@ -73,6 +73,13 @@
     </div>
   </script>
 
+  <script type="text/x-handlebars" data-template-name="time-taken-detail">
+    {{view SC.Checkbox title="Hide/Show" valueBinding="content.hide"}}
+    <h2>{{content.title}}</h2>
+    {{collection ResidentsShow.MedicationCollectionView contentBinding="content.medications" itemClassBinding="content.hide"}}
+    <hr />
+  </script>
+
 </head>
 <body>
 
@@ -90,51 +97,7 @@
       <hr />
 
       <script type='text/html'>
-      {{view SC.Checkbox title="Edit" valueBinding="ResidentShow.medicationsController.early_morning.content.hide"}}
-      <h2>Early Morning</h2>
-      {{collection ResidentsShow.MedicationCollectionView contentBinding="ResidentsShow.medicationsController.early_morning" itemClassBinding="content.editMode"}}
-      <hr />
-      </script>
-
-      <h2>Morning</h2>
-      <script type='text/html'>
-      {{collection ResidentsShow.MedicationCollectionView contentBinding="ResidentsShow.medicationsController.morning"}}
-      </script>
-      <hr />
-
-      <h2>Noon</h2>
-      <script type='text/html'>
-      {{collection ResidentsShow.MedicationCollectionView contentBinding="ResidentsShow.medicationsController.noon"}}
-      </script>
-      <hr />
-
-      <h2>Evening</h2>
-      <script type='text/html'>
-      {{collection ResidentsShow.MedicationCollectionView contentBinding="ResidentsShow.medicationsController.evening"}}
-      </script>
-      <hr />
-
-      <h2>Before Bedtime</h2>
-      <script type='text/html'>
-      {{collection ResidentsShow.MedicationCollectionView contentBinding="ResidentsShow.medicationsController.before_bedtime"}}
-      </script>
-      <hr />
-
-      <h2>Bedtime</h2>
-      <script type='text/html'>
-      {{collection ResidentsShow.MedicationCollectionView contentBinding="ResidentsShow.medicationsController.bedtime"}}
-      </script>
-      <hr />
-
-      <h2>Other</h2>
-      <script type='text/html'>
-      {{collection ResidentsShow.MedicationCollectionView contentBinding="ResidentsShow.medicationsController.other"}}
-      </script>
-      <hr />
-
-      <h2>As Needed</h2>
-      <script type='text/html'>
-      {{collection ResidentsShow.MedicationCollectionView contentBinding="ResidentsShow.medicationsController.as_needed"}}
+        {{collection ResidentsShow.TimesTakenCollectionView contentBinding="ResidentsShow.timesTakenController"}}
       </script>
 
       <hr />
@@ -228,10 +191,22 @@
     ResidentsShow.TimeOfDay = SC.Object.extend
       title: null
 
+    ResidentsShow.TimeTaken = SC.Object.extend
+      title: null
+      hide: false
+      editMode: false
+
     # Controllers
     ResidentsShow.residentsController = SC.ArrayProxy.create
       content: []
       createResident: (attributes) -> @pushObject ResidentsShow.Resident.create(attributes)
+
+    ResidentsShow.timesTakenController = SC.ArrayProxy.create
+      content: []
+      create: (attributes) -> @pushObject ResidentsShow.TimeTaken.create attributes
+
+
+
 
     ResidentsShow.medicationsController = SC.ArrayProxy.create
       content: []
@@ -243,6 +218,7 @@
           @set(time_taken, @filterProperty(time_taken, true))
 
       createMedication: (attributes) -> @pushObject ResidentsShow.Medication.create attributes
+
 
     ResidentsShow.allergiesController = SC.ArrayProxy.create
       content: []
@@ -263,6 +239,13 @@
       itemViewClass: ResidentsShow.ResidentDetailView
       tagName: 'ul'
 
+    ResidentsShow.TimeTakenDetailView = SC.View.extend
+      templateName: 'time-taken-detail'
+
+    ResidentsShow.TimesTakenCollectionView = SC.CollectionView.extend
+      itemViewClass: ResidentsShow.TimeTakenDetailView
+      tagName: 'ul'
+
     # Random Units
     genders = -> ["M","F"]
 
@@ -279,6 +262,8 @@
     allergy_names = -> ['penicillins', 'donepezil', 'carbamazepine', 'codeine', 'sulfa drugs']
     allergy_types = -> ['allergen', 'ingredient']
     true_false = -> [true, false]
+
+    times_taken = ['early_morning', 'morning', 'noon', 'evening', 'before_bedtime', 'bedtime', 'other', 'as_needed']
 
     # Faker Generate Meds
     for resident_id in [1]
@@ -313,6 +298,11 @@
           other: Faker.Helpers.randomize(true_false())
           as_needed: Faker.Helpers.randomize(true_false())
 
+      for time_taken in times_taken
+        ResidentsShow.timesTakenController.create
+          title: time_taken
+          medications: ResidentsShow.medicationsController.filterProperty(time_taken, true)
+ 
       for allergy_id in [1..5]
         ResidentsShow.allergiesController.createAllergy
           id: allergy_id
