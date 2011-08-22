@@ -31,7 +31,8 @@
     other: false,
     as_needed: false,
     editMode: false,
-    state: null
+    state: null,
+    administration_comments: null
   });
   ResidentsShow.Allergy = SC.Object.extend({
     id: null,
@@ -218,7 +219,8 @@
         bedtime: Faker.Helpers.randomize(true_false()),
         other: Faker.Helpers.randomize(true_false()),
         as_needed: Faker.Helpers.randomize(true_false()),
-        state: Faker.Helpers.randomize(medication_states)
+        state: Faker.Helpers.randomize(medication_states),
+        administration_comments: "hello world"
       });
     }
     _e = times_taken;

@@ -53,7 +53,9 @@
         <h5>{{content.sig}}</h5>
         <p style='margin: 3px 0;'>{{content.rx_medical_note}}</p>
         <p style='margin: 3px 0;'>Last Administered by {{content.last_administered_by}} on {{content.last_administered_at}}</p>
-        <a href=''>add comments</a> | <a href=''>side effects</a> | <a href=''>warnings</a> | <a href=''>add parameter</a> | <a href=''>history</a>
+        <p class='attribute'>{{content.administration_comments}}</p>
+        <div class='attribute-edit'>{{view SC.TextArea valueBinding="content.administration_comments"}}</div>
+        <a href=''>side effects</a> | <a href=''>warnings</a> | <a href=''>add parameter</a> | <a href=''>history</a>
       </div>
       <div class="attribute" style='width:5%;float:left;'>
         YES/NO

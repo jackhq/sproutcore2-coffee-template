@@ -40,6 +40,7 @@ ResidentsShow.Medication = SC.Object.extend
   as_needed: false
   editMode: false
   state: null
+  administration_comments: null
 
 ResidentsShow.Allergy = SC.Object.extend
   id: null
@@ -176,6 +177,7 @@ for resident_id in [1]
       other: Faker.Helpers.randomize(true_false())
       as_needed: Faker.Helpers.randomize(true_false())
       state: Faker.Helpers.randomize(medication_states)
+      administration_comments: "hello world"
 
   for time_taken in times_taken
     ResidentsShow.timesTakenController.create
