@@ -31,6 +31,13 @@
   <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
   <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
   <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+
+  <style type="text/css">
+    .hide { display: none; }
+    .edit-buttons { display: none; }
+    .edit-mode .edit-buttons { display: block; }
+  </style>
+
   <script type="text/x-handlebars" data-template-name="medication-detail">
     <div style='width:100%'>
       <div style='float:left;'>
@@ -43,7 +50,7 @@
         <p style='margin: 3px 0;'>Last Administered by {{content.last_administered_by}} on {{content.last_administered_at}}</p>
         <a href=''>add comments</a> | <a href=''>side effects</a> | <a href=''>warnings</a> | <a href=''>add parameter</a> | <a href=''>history</a>
       </div>
-      <div style='width:5%;float:left;'>
+      <div class="edit-buttons" style='width:5%;float:left;'>
         YES/NO
       </div>
     </div>
@@ -82,11 +89,12 @@
       </script>
       <hr />
 
-      <h2>Early Morning</h2>
       <script type='text/html'>
-      {{collection ResidentsShow.MedicationCollectionView contentBinding="ResidentsShow.medicationsController.early_morning"}}
-      </script>
+      {{view SC.Checkbox title="Edit" valueBinding="ResidentShow.medicationsController.early_morning.content.hide"}}
+      <h2>Early Morning</h2>
+      {{collection ResidentsShow.MedicationCollectionView contentBinding="ResidentsShow.medicationsController.early_morning" itemClassBinding="content.editMode"}}
       <hr />
+      </script>
 
       <h2>Morning</h2>
       <script type='text/html'>
@@ -209,6 +217,7 @@
       other: false
       as_needed: false
       view_only: true
+      editMode: false
 
     ResidentsShow.Allergy = SC.Object.extend
       id: null
