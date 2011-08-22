@@ -80,156 +80,52 @@
       {{/collection}}
       </script>
       <hr />
+
       <h2>Early Morning</h2>
       <script type='text/html'>
-      {{#collection contentBinding="ResidentsShow.medicationsController.early_morning" tagName="ul" templateName="medication-detail"}}
-        <div style='width:100%'>
-          <div style='float:left;'>
-            <img {{bindAttr src="content.image_filename"}} style='height:50px;width:50px;'></img>
-          </div>
-          <div style='width: 80%;float:left;margin-left: 15px;'>
-            <h4><strong>{{content.name}}</strong> {{content.strength}} {{content.form}}</h4>
-            <h5>{{content.sig}}</h5>
-            <p style='margin: 3px 0;'>{{content.rx_medical_note}}</p>
-            <p style='margin: 3px 0;'>Last Administered by {{content.last_administered_by}} on {{content.last_administered_at}}</p>
-            <a href=''>add comments</a> | <a href=''>side effects</a> | <a href=''>warnings</a> | <a href=''>add parameter</a> | <a href=''>history</a>
-          </div>
-        </div>
-        <div class='clear' />
-      {{/collection}}
+      {{collection ResidentsShow.MedicationCollectionView contentBinding="ResidentsShow.medicationsController.early_morning"}}
       </script>
       <hr />
+
       <h2>Morning</h2>
       <script type='text/html'>
-      {{#collection contentBinding="ResidentsShow.medicationsController.morning" tagName="ul" templateName="medication-detail"}}
-        <div style='width:100%'>
-          <div style='float:left;'>
-            <img {{bindAttr src="content.image_filename"}} style='height:50px;width:50px;'></img>
-          </div>
-          <div style='width: 80%;float:left;margin-left: 15px;'>
-            <h4><strong>{{content.name}}</strong> {{content.strength}} {{content.form}}</h4>
-            <h5>{{content.sig}}</h5>
-            <p style='margin: 3px 0;'>{{content.rx_medical_note}}</p>
-            <p style='margin: 3px 0;'>Last Administered by {{content.last_administered_by}} on {{content.last_administered_at}}</p>
-            <a href=''>add comments</a> | <a href=''>side effects</a> | <a href=''>warnings</a> | <a href=''>add parameter</a> | <a href=''>history</a>
-          </div>
-        </div>
-        <div class='clear' />
-      {{/collection}}
+      {{collection ResidentsShow.MedicationCollectionView contentBinding="ResidentsShow.medicationsController.morning"}}
       </script>
       <hr />
+
       <h2>Noon</h2>
       <script type='text/html'>
-      {{#collection contentBinding="ResidentsShow.medicationsController.noon" tagName="ul" templateName="medication-detail"}}
-        <div style='width:100%'>
-          <div style='float:left;'>
-            <img {{bindAttr src="content.image_filename"}} style='height:50px;width:50px;'></img>
-          </div>
-          <div style='width: 80%;float:left;margin-left: 15px;'>
-            <h4><strong>{{content.name}}</strong> {{content.strength}} {{content.form}}</h4>
-            <h5>{{content.sig}}</h5>
-            <p style='margin: 3px 0;'>{{content.rx_medical_note}}</p>
-            <p style='margin: 3px 0;'>Last Administered by {{content.last_administered_by}} on {{content.last_administered_at}}</p>
-            <a href=''>add comments</a> | <a href=''>side effects</a> | <a href=''>warnings</a> | <a href=''>add parameter</a> | <a href=''>history</a>
-          </div>
-        </div>
-        <div class='clear' />
-      {{/collection}}
+      {{collection ResidentsShow.MedicationCollectionView contentBinding="ResidentsShow.medicationsController.noon"}}
       </script>
       <hr />
+
       <h2>Evening</h2>
       <script type='text/html'>
-      {{#collection contentBinding="ResidentsShow.medicationsController.evening" tagName="ul" templateName="medication-detail"}}
-        <div style='width:100%'>
-          <div style='float:left;'>
-            <img {{bindAttr src="content.image_filename"}} style='height:50px;width:50px;'></img>
-          </div>
-          <div style='width: 80%;float:left;margin-left: 15px;'>
-            <h4><strong>{{content.name}}</strong> {{content.strength}} {{content.form}}</h4>
-            <h5>{{content.sig}}</h5>
-            <p style='margin: 3px 0;'>{{content.rx_medical_note}}</p>
-            <p style='margin: 3px 0;'>Last Administered by {{content.last_administered_by}} on {{content.last_administered_at}}</p>
-            <a href=''>add comments</a> | <a href=''>side effects</a> | <a href=''>warnings</a> | <a href=''>add parameter</a> | <a href=''>history</a>
-          </div>
-        </div>
-        <div class='clear' />
-      {{/collection}}
+      {{collection ResidentsShow.MedicationCollectionView contentBinding="ResidentsShow.medicationsController.evening"}}
       </script>
       <hr />
+
       <h2>Before Bedtime</h2>
       <script type='text/html'>
-      {{#collection contentBinding="ResidentsShow.medicationsController.before_bedtime" tagName="ul" templateName="medication-detail"}}
-        <div style='width:100%'>
-          <div style='float:left;'>
-            <img {{bindAttr src="content.image_filename"}} style='height:50px;width:50px;'></img>
-          </div>
-          <div style='width: 80%;float:left;margin-left: 15px;'>
-            <h4><strong>{{content.name}}</strong> {{content.strength}} {{content.form}}</h4>
-            <h5>{{content.sig}}</h5>
-            <p style='margin: 3px 0;'>{{content.rx_medical_note}}</p>
-            <p style='margin: 3px 0;'>Last Administered by {{content.last_administered_by}} on {{content.last_administered_at}}</p>
-            <a href=''>add comments</a> | <a href=''>side effects</a> | <a href=''>warnings</a> | <a href=''>add parameter</a> | <a href=''>history</a>
-          </div>
-        </div>
-        <div class='clear' />
-      {{/collection}}
+      {{collection ResidentsShow.MedicationCollectionView contentBinding="ResidentsShow.medicationsController.before_bedtime"}}
       </script>
       <hr />
+
       <h2>Bedtime</h2>
       <script type='text/html'>
-      {{#collection contentBinding="ResidentsShow.medicationsController.bedtime" tagName="ul" templateName="medication-detail"}}
-        <div style='width:100%'>
-          <div style='float:left;'>
-            <img {{bindAttr src="content.image_filename"}} style='height:50px;width:50px;'></img>
-          </div>
-          <div style='width: 80%;float:left;margin-left: 15px;'>
-            <h4><strong>{{content.name}}</strong> {{content.strength}} {{content.form}}</h4>
-            <h5>{{content.sig}}</h5>
-            <p style='margin: 3px 0;'>{{content.rx_medical_note}}</p>
-            <p style='margin: 3px 0;'>Last Administered by {{content.last_administered_by}} on {{content.last_administered_at}}</p>
-            <a href=''>add comments</a> | <a href=''>side effects</a> | <a href=''>warnings</a> | <a href=''>add parameter</a> | <a href=''>history</a>
-          </div>
-        </div>
-        <div class='clear' />
-      {{/collection}}
+      {{collection ResidentsShow.MedicationCollectionView contentBinding="ResidentsShow.medicationsController.bedtime"}}
       </script>
       <hr />
+
       <h2>Other</h2>
       <script type='text/html'>
-      {{#collection contentBinding="ResidentsShow.medicationsController.other" tagName="ul" templateName="medication-detail"}}
-        <div style='width:100%'>
-          <div style='float:left;'>
-            <img {{bindAttr src="content.image_filename"}} style='height:50px;width:50px;'></img>
-          </div>
-          <div style='width: 80%;float:left;margin-left: 15px;'>
-            <h4><strong>{{content.name}}</strong> {{content.strength}} {{content.form}}</h4>
-            <h5>{{content.sig}}</h5>
-            <p style='margin: 3px 0;'>{{content.rx_medical_note}}</p>
-            <p style='margin: 3px 0;'>Last Administered by {{content.last_administered_by}} on {{content.last_administered_at}}</p>
-            <a href=''>add comments</a> | <a href=''>side effects</a> | <a href=''>warnings</a> | <a href=''>add parameter</a> | <a href=''>history</a>
-          </div>
-        </div>
-        <div class='clear' />
-      {{/collection}}
+      {{collection ResidentsShow.MedicationCollectionView contentBinding="ResidentsShow.medicationsController.other"}}
       </script>
       <hr />
+
       <h2>As Needed</h2>
       <script type='text/html'>
-      {{#collection contentBinding="ResidentsShow.medicationsController.as_needed" tagName="ul" templateName="medication-detail"}}
-        <div style='width:100%'>
-          <div style='float:left;'>
-            <img {{bindAttr src="content.image_filename"}} style='height:50px;width:50px;'></img>
-          </div>
-          <div style='width: 80%;float:left;margin-left: 15px;'>
-            <h4><strong>{{content.name}}</strong> {{content.strength}} {{content.form}}</h4>
-            <h5>{{content.sig}}</h5>
-            <p style='margin: 3px 0;'>{{content.rx_medical_note}}</p>
-            <p style='margin: 3px 0;'>Last Administered by {{content.last_administered_by}} on {{content.last_administered_at}}</p>
-            <a href=''>add comments</a> | <a href=''>side effects</a> | <a href=''>warnings</a> | <a href=''>add parameter</a> | <a href=''>history</a>
-          </div>
-        </div>
-        <div class='clear' />
-      {{/collection}}
+      {{collection ResidentsShow.MedicationCollectionView contentBinding="ResidentsShow.medicationsController.as_needed"}}
       </script>
 
       <hr />
@@ -369,9 +265,12 @@
 
 
     # views
-    class ResidentsShow.MedicationDetailView extends SC.View
+    ResidentsShow.MedicationDetailView = SC.View.extend
       templateName: 'medication-detail'
 
+    ResidentsShow.MedicationCollectionView = SC.CollectionView.extend
+      itemViewClass: ResidentsShow.MedicationDetailView
+      tagName: 'ul'
 
     # Random Units
     genders = -> ["M","F"]
