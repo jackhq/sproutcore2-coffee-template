@@ -80,12 +80,15 @@ Residents.Resident = SC.Object.extend
   room: null
   bed: null
 
-# This hide is not working for wings yet. Same thing works for the unit just fine.
 Residents.Unit = SC.Object.extend
-  wings: []
+  unit_wings: []
   unit_name: null
   isSelected: true
-      
+
+Residents.Wing = SC.Object.extend
+  wing_residents: []
+  wing_name: null
+
 ###############
 # Controllers #
 ###############
@@ -118,7 +121,15 @@ Residents.unitsController = SC.ArrayProxy.create
   createUnit: (unit) ->
     @pushObject Residents.Unit.create
       unit_name: unit.name
-      wings: unit.wings
+      unit_wings: unit.wings
+
+Residents.wingsController = SC.ArrayProxy.create
+  content: []
+
+  createWing: (wing) ->
+    @pushObject Residents.Wing.create
+      wing_name: wing.name
+      wing_residents: wing.residents
 
 #########
 # Views #
@@ -127,13 +138,13 @@ Residents.unitsController = SC.ArrayProxy.create
 Residents.ResidentsView = SC.CollectionView.extend
   contentBinding: 'Residents.unitsController'
   tagName: 'ul'
-  
+
 Residents.UnitFilterView = SC.CollectionView.extend
   contentBinding: 'Residents.unitsController'
   tagName: 'ul'
 
 Residents.WingFilterView = SC.CollectionView.extend
-  contentBinding: "parentView.content.wings"
+  contentBinding: "parentView.content.unit_wings"
   tagName: 'ul'
 
 Residents.FilterItemView = SC.Checkbox.extend
@@ -148,4 +159,10 @@ residents = for resident in residentsData
   Residents.residentsController.createResident(resident)
 
 units = for unit in unitsData
+  wings = for wing in unit.wings
+    wing.wing_residents = []
+    residents = Residents.residentsController.filterProperty('wing', wing.name)
+    for resident in residents
+      wing.wing_residents.push resident
+      Residents.wingsController.createWing(wing)
   Residents.unitsController.createUnit(unit)

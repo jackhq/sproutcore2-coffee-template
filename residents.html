@@ -45,11 +45,18 @@
           {{#if content.isSelected}}
             <h4>{{content.unit_name}}</h4>
             <ul>
-              {{#content.residents}}
+              {{#content.unit_wings}}
                 <li>
-                  <strong>{{full_name}}</strong>
+                  <strong>{{name}}</strong>
+                  <ul>
+                    {{#wing_residents}}
+                    <li>
+                      <strong>{{full_name}}</strong>
+                    </li>
+                    {{/wing_residents}}
+                  </ul>
                 </li>
-              {{/content.residents}}
+              {{/content.unit_wings}}
             </ul>
           {{/if}}
         {{/collection}}
