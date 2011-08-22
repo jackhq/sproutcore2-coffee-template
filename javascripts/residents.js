@@ -1,5 +1,5 @@
 (function() {
-  var resident, residents, residentsData, unit, units, unitsData;
+  var resident, residents, residentsData, unit, units, unitsData, wing, wings;
   unitsData = [
     {
       name: 'Unit A',
@@ -81,9 +81,13 @@
     bed: null
   });
   Residents.Unit = SC.Object.extend({
-    wings: [],
+    unit_wings: [],
     unit_name: null,
     isSelected: true
+  });
+  Residents.Wing = SC.Object.extend({
+    wing_residents: [],
+    wing_name: null
   });
   Residents.residentsController = SC.ArrayProxy.create({
     content: [],
@@ -117,7 +121,16 @@
     createUnit: function(unit) {
       return this.pushObject(Residents.Unit.create({
         unit_name: unit.name,
-        wings: unit.wings
+        unit_wings: unit.wings
+      }));
+    }
+  });
+  Residents.wingsController = SC.ArrayProxy.create({
+    content: [],
+    createWing: function(wing) {
+      return this.pushObject(Residents.Wing.create({
+        wing_name: wing.name,
+        wing_residents: wing.residents
       }));
     }
   });
@@ -130,7 +143,7 @@
     tagName: 'ul'
   });
   Residents.WingFilterView = SC.CollectionView.extend({
-    contentBinding: "parentView.content.wings",
+    contentBinding: "parentView.content.unit_wings",
     tagName: 'ul'
   });
   Residents.FilterItemView = SC.Checkbox.extend({
@@ -151,6 +164,27 @@
     _results = [];
     for (_i = 0, _len = unitsData.length; _i < _len; _i++) {
       unit = unitsData[_i];
+      wings = (function() {
+        var _j, _len2, _ref, _results2;
+        _ref = unit.wings;
+        _results2 = [];
+        for (_j = 0, _len2 = _ref.length; _j < _len2; _j++) {
+          wing = _ref[_j];
+          wing.wing_residents = [];
+          residents = Residents.residentsController.filterProperty('wing', wing.name);
+          _results2.push((function() {
+            var _k, _len3, _results3;
+            _results3 = [];
+            for (_k = 0, _len3 = residents.length; _k < _len3; _k++) {
+              resident = residents[_k];
+              wing.wing_residents.push(resident);
+              _results3.push(Residents.wingsController.createWing(wing));
+            }
+            return _results3;
+          })());
+        }
+        return _results2;
+      })();
       _results.push(Residents.unitsController.createUnit(unit));
     }
     return _results;
