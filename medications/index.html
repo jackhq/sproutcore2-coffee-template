@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+
+  <!-- Basic Page Needs
+  ================================================== -->
+  <meta charset="utf-8">
+  <title>Your Page Title Here :)</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <!-- Mobile Specific Metas
+  ================================================== -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- CSS
+  ================================================== -->
+  <link rel="stylesheet" href="../stylesheets/base.css">
+  <link rel="stylesheet" href="../stylesheets/skeleton.css">
+  <link rel="stylesheet" href="../stylesheets/layout.css">
+
+  <!-- Favicons
+  ================================================== -->
+  <link rel="shortcut icon" href="images/favicon.ico">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+
+  <style type="text/css">
+    .hide { display: none; }
+    .edit-buttons { display: none; }
+    .edit-mode .edit-buttons { display: block; }
+  </style>
+
+  <script type="text/x-handlebars" data-template-name="medication-detail">
+    <div style='width:100%'>
+      <div style='float:left;'>
+        <img {{bindAttr src="content.image_filename"}} style='height:50px;width:50px;'></img>
+      </div>
+      <div style='width: 80%;float:left;margin-left: 15px;'>
+        <h4><strong>{{content.name}}</strong> {{content.strength}} {{content.form}}</h4>
+        <h5>{{content.sig}}</h5>
+        <p style='margin: 3px 0;'>{{content.rx_medical_note}}</p>
+        <p style='margin: 3px 0;'>Last Administered by {{content.last_administered_by}} on {{content.last_administered_at}}</p>
+        <a href=''>add comments</a> | <a href=''>side effects</a> | <a href=''>warnings</a> | <a href=''>add parameter</a> | <a href=''>history</a>
+      </div>
+      <div class="edit-buttons" style='width:5%;float:left;'>
+        YES/NO
+      </div>
+    </div>
+    <div class='clear' />
+  </script>
+
+
+  <script type="text/x-handlebars" data-template-name="resident-detail">
+    <div style='width:100%'>
+      <div style='float:left;'>
+        <img src='x' style='height:50px;width:50px;'></img>
+        <div>Current Status: <br/> LTC</div>
+      </div>
+      <div style='width: 80%;float:right;'>
+        <h4>{{content.name}} ({{content.dob}}) {{content.gender}}</h4>
+        <h5>{{content.unit}} - {{content.wing}} - Room#&nbsp;{{content.room}}  {{content.bed}}</h5>
+        <h5>Primary Dx: Congestive Heart Failure(178.00)</h5>
+        <h5>Secondary Dx: Asthmal(299.00)</h5>
+      </div>
+    </div>
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="time-taken-detail">
+    {{view SC.Checkbox title="Hide" valueBinding="content.hide"}}
+    <h2>{{content.title}}</h2>
+    {{collection ResidentsShow.MedicationCollectionView classBinding="parentView.content.hide" contentBinding="content.medications"}}
+    <hr />
+  </script>
+
+</head>
+<body>
+
+  <!-- Primary Page Layout
+  ================================================== -->
+
+  <!-- Delete everything in this .container and get started on your own site! -->
+
+  <div class="container">
+    <div class="two-thirds column">
+      <h3>Resident Medication Administration Record</h3>
+      <script type='text/html'>
+      {{collection ResidentsShow.ResidentCollectionView contentBinding="ResidentsShow.residentsController"}}
+      </script>
+      <hr />
+
+      <script type='text/html'>
+        {{collection ResidentsShow.TimesTakenCollectionView contentBinding="ResidentsShow.timesTakenController"}}
+      </script>
+
+    </div>
+    <div class="one-third column">
+      <div style='margin-left: 10px;'>
+        <p>Current Administrator</p>
+        <h4>User Name</h4>
+        <hr></hr>
+        <p>Allergies</p>
+        <script type='text/html'>
+          {{#collection contentBinding="ResidentsShow.allergiesController"}}
+            <span>{{content.name}}</span>
+          {{^}}
+            <p style='margin:0;padding:0;margin-left: 10px;'>No Known Allergies</p>
+          {{/collection}}
+        </script>
+        <hr></hr>
+        <p>On Hold Medications</p>
+        <script type='text/html'>
+          {{#collection contentBinding="ResidentsShow.medicationsController.on_hold"}}
+            {{content.name}}
+          {{^}}
+            <p style='margin:0;padding:0;margin-left: 10px;'>No On Hold Medications</p>
+          {{/collection}}
+        </script>
+        <hr></hr>
+        <p>Discontinued Medications</p>
+        <script type='text/html'>
+          {{#collection contentBinding="ResidentsShow.medicationsController.discontinued"}}
+            {{content.name}}
+          {{^}}
+            <p style='margin:0;padding:0;margin-left: 10px;'>No Discontinued Medications</p>
+          {{/collection}}
+        </script>
+      </div>
+    </div>
+
+  </div><!-- container -->
+
+
+
+  <!-- JS
+  ================================================== -->
+  <script src="../javascripts/jquery-1.6.1.min.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../javascripts/sugar-0.9.4.min.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../javascripts/tabs.js"></script>
+  <script src="../javascripts/sproutcore-2.0.beta.3.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../javascripts/Faker.js" type="text/javascript" charset="utf-8"></script>
+  <script src="javascripts/medications.js" type="text/javascript" charset="utf-8"></script>
+
+
+<!-- End Document
+================================================== -->
+</body>
+</html>
