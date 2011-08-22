@@ -25,9 +25,6 @@
   <link rel="stylesheet" href="stylesheets/base.css">
   <link rel="stylesheet" href="stylesheets/skeleton.css">
   <link rel="stylesheet" href="stylesheets/layout.css">
-  <style type='text/css'>
-    .hide { display: none;}
-  </style>
 
   <!-- Favicons
   ================================================== -->
@@ -44,26 +41,31 @@
     <div id='residents' class="two-thirds column">
       <h1>Residents</h1>
       <script type="text/html">
-        {{#collection Residents.ResidentsView itemClassBinding="content.hide"}}
-          <h4>{{content.unit_name}}</h4>
-          <ul>
-          {{#content.residents}}
-            <li>
-              <strong>{{full_name}}</strong>
-            </li>
-          {{/content.residents}}
-          </ul>
+        {{#collection Residents.ResidentsView}}
+          {{#if content.isSelected}}
+            <h4>{{content.unit_name}}</h4>
+            <ul>
+              {{#content.residents}}
+                <li>
+                  <strong>{{full_name}}</strong>
+                </li>
+              {{/content.residents}}
+            </ul>
+          {{/if}}
         {{/collection}}
       </script>
     </div>
 
-    <!-- Residents Filter
+    <!-- Units Filter
     ============================================ -->
     <div id='residents-filter' class="one-thirds column">
       <h1>Filter</h1>
       <script type="text/html">
-        {{#collection Residents.UnitsView}}}
-          {{view Residents.FilterView value="checked" valueBinding="content.hide" title=content.unit_name}}
+        {{#collection Residents.UnitFilterView}}}
+          {{view Residents.FilterItemView title=content.unit_name}}
+          {{#collection Residents.WingFilterView}}
+            {{content.name}}
+          {{/collection}}
         {{/collection}}
       </script>
     </div>
