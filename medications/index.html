@@ -34,8 +34,11 @@
 
   <style type="text/css">
     .hide { display: none; }
-    .edit-buttons { display: none; }
-    .edit-mode .edit-buttons { display: block; }
+
+    .attribute{ display: block; }
+    .attribute-edit{ display: none; }
+    .editable .attribute{ display: none; }
+    .editable .attribute-edit{ display: block; }
   </style>
 
   <script type="text/x-handlebars" data-template-name="medication-detail">
@@ -50,8 +53,11 @@
         <p style='margin: 3px 0;'>Last Administered by {{content.last_administered_by}} on {{content.last_administered_at}}</p>
         <a href=''>add comments</a> | <a href=''>side effects</a> | <a href=''>warnings</a> | <a href=''>add parameter</a> | <a href=''>history</a>
       </div>
-      <div class="edit-buttons" style='width:5%;float:left;'>
+      <div class="attribute" style='width:5%;float:left;'>
         YES/NO
+      </div>
+      <div class="attribute-edit" style='width:5%;float:left;'>
+        YES/NO Editable
       </div>
     </div>
     <div class='clear' />
@@ -75,8 +81,9 @@
 
   <script type="text/x-handlebars" data-template-name="time-taken-detail">
     {{view SC.Checkbox title="Hide" valueBinding="content.hide"}}
+    {{view SC.Checkbox title="Edit Mode" valueBinding="content.editable"}}
     <h2>{{content.title}} ({{content.medication_count}})</h2>
-    {{collection ResidentsShow.MedicationCollectionView classBinding="parentView.content.hide" contentBinding="content.medications"}}
+    {{collection ResidentsShow.MedicationCollectionView classBinding="parentView.content.hide parentView.content.editable" contentBinding="content.medications"}}
     <hr />
   </script>
 
@@ -108,7 +115,7 @@
         <hr></hr>
         <script type='text/html'>
           {{#view contentBinding="ResidentsShow.allergiesController"}}
-            <p>Allergies ({{content.length}})</p>
+            <p><strong>Allergies</strong> ({{content.length}})</p>
           {{/view}}
           {{#collection contentBinding="ResidentsShow.allergiesController"}}
             <span>{{content.name}}</span>
@@ -119,7 +126,7 @@
         <hr></hr>
         <script type='text/html'>
           {{#view contentBinding="ResidentsShow.medicationsController.on_hold"}}
-            <p>On Hold Medications ({{content.length}})</p>
+            <p><strong>On Hold Medications</strong> ({{content.length}})</p>
           {{/view}}
           {{#collection contentBinding="ResidentsShow.medicationsController.on_hold"}}
             {{content.name}}
@@ -130,7 +137,7 @@
         <hr></hr>
         <script type='text/html'>
           {{#view contentBinding="ResidentsShow.medicationsController.discontinued"}}
-            <p>Discontinued Medications ({{content.length}})</p>
+            <p><strong>Discontinued Medications</strong> ({{content.length}})</p>
           {{/view}}
           {{#collection contentBinding="ResidentsShow.medicationsController.discontinued"}}
             {{content.name}}

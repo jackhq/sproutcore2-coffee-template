@@ -51,7 +51,7 @@ ResidentsShow.TimeTaken = SC.Object.extend
   title: null
   medications: []
   hide: false
-  editMode: false
+  editable: false
   medication_count: SC.computed -> @medications.length
 
 
