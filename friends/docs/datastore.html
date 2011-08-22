@@ -1,0 +1,83 @@
+<!DOCTYPE html>  <html> <head>   <title>datastore.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="app.html">                 app.coffee               </a>                                           <a class="source" href="datastore.html">                 datastore.coffee               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               datastore.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="nx">$</span><span class="p">.</span><span class="nx">ajaxSetup</span> 
+  <span class="nv">cache: </span><span class="kc">false</span>
+  <span class="nv">dataType: </span><span class="s2">&quot;json&quot;</span>
+  
+<span class="nx">App</span><span class="p">.</span><span class="nx">reopen</span>
+  <span class="nv">store: </span><span class="nx">SC</span><span class="p">.</span><span class="nx">Store</span><span class="p">.</span><span class="nx">create</span><span class="p">().</span><span class="nx">from</span><span class="p">(</span><span class="s1">&#39;App.DataSource&#39;</span><span class="p">)</span>
+  <span class="nv">datastoreCreateFriend: </span><span class="nf">(dataHash) -&gt;</span>
+    <span class="nv">friend = </span><span class="nx">Friends</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">createRecord</span> <span class="nx">App</span><span class="p">.</span><span class="nx">Friend</span><span class="p">,</span> <span class="nx">dataHash</span>
+    <span class="nx">friend</span><span class="p">.</span><span class="nx">save</span><span class="p">()</span>
+    <span class="nx">friend</span>
+  <span class="nv">datastoreUpdateFriends: </span><span class="o">-&gt;</span>
+    <span class="nv">store = </span><span class="nx">App</span><span class="p">.</span><span class="nx">store</span>
+    <span class="nv">changes = </span><span class="nx">store</span><span class="p">.</span><span class="nx">get</span> <span class="s1">&#39;changelog&#39;</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>could be a problem</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">changes</span><span class="p">.</span><span class="nx">forEach</span> <span class="p">(</span> <span class="o">-&gt;</span>
+      <span class="nv">id = </span><span class="nx">store</span><span class="p">.</span><span class="nx">idFor</span> <span class="nx">storeKey</span>
+      <span class="nv">rec = </span><span class="nx">store</span><span class="p">.</span><span class="nx">find</span> <span class="nx">App</span><span class="p">.</span><span class="nx">Friend</span><span class="p">,</span> <span class="nx">id</span>
+      <span class="nx">rec</span><span class="p">.</span><span class="nx">save</span><span class="p">()</span>
+      <span class="p">),</span> <span class="k">this</span>
+    <span class="nx">YES</span>
+
+<span class="nx">App</span><span class="p">.</span><span class="nx">friendsController</span><span class="p">.</span><span class="nx">reopen</span>
+  <span class="nv">saveAllFriends: </span><span class="o">-&gt;</span>
+    <span class="nx">App</span><span class="p">.</span><span class="nx">datastoreUpdateFriends</span><span class="p">()</span>
+
+<span class="nv">App.DataSource = </span><span class="nx">SC</span><span class="p">.</span><span class="nx">DataSource</span><span class="p">.</span><span class="nx">extend</span>
+  <span class="nv">fetch: </span><span class="nf">(store, query) -&gt;</span>
+    <span class="nv">recordType = </span><span class="nx">query</span><span class="p">.</span><span class="nx">get</span> <span class="s1">&#39;recordType&#39;</span>
+    <span class="nv">jqxhr = </span><span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">(</span><span class="nv">url: </span><span class="s1">&#39;/friends&#39;</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">done</span> <span class="nf">(dataHashes) -&gt;</span>
+        <span class="nv">ids = </span><span class="nx">dataHashes</span><span class="p">.</span><span class="nx">map</span> <span class="p">(</span> <span class="nf">(dataHash) -&gt;</span>
+          <span class="nv">id = </span><span class="nx">dataHash</span><span class="p">.</span><span class="nx">id</span>
+          <span class="k">delete</span> <span class="nx">dataHash</span><span class="p">.</span><span class="nx">id</span>
+          <span class="nx">id</span><span class="p">),</span> <span class="k">this</span>
+        <span class="nx">store</span><span class="p">.</span><span class="nx">loadRecords</span><span class="p">(</span><span class="nx">recordType</span><span class="p">,</span> <span class="nx">dataHashes</span><span class="p">,</span> <span class="nx">ids</span><span class="p">)</span>
+        <span class="nx">store</span><span class="p">.</span><span class="nx">dataSourceDidFetchQuery</span><span class="p">(</span><span class="nx">query</span><span class="p">)</span>
+    <span class="nx">YES</span>
+
+<span class="nv">App.Friend = </span><span class="nx">SC</span><span class="p">.</span><span class="nx">Record</span><span class="p">.</span><span class="nx">extend</span>
+  <span class="nv">name: </span><span class="nx">SC</span><span class="p">.</span><span class="nx">Record</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="nb">String</span><span class="p">)</span>
+  <span class="nv">category: </span><span class="nx">SC</span><span class="p">.</span><span class="nx">Record</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="nb">String</span><span class="p">)</span>
+  <span class="nv">createdAt: </span><span class="nx">SC</span><span class="p">.</span><span class="nx">Record</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="nx">SC</span><span class="p">.</span><span class="nx">DateTime</span><span class="p">,</span> <span class="p">{</span> <span class="nv">key: </span><span class="s1">&#39;created_at&#39;</span> <span class="p">})</span>
+  <span class="nv">updatedAt: </span><span class="nx">SC</span><span class="p">.</span><span class="nx">Record</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="nx">SC</span><span class="p">.</span><span class="nx">DateTime</span><span class="p">,</span> <span class="p">{</span> <span class="nv">key: </span><span class="s1">&#39;updated_at&#39;</span> <span class="p">})</span>
+   
+  <span class="nv">save: </span><span class="o">-&gt;</span>
+    <span class="nv">K = </span><span class="nx">SC</span><span class="p">.</span><span class="nx">Record</span>
+    <span class="nv">recordType = </span><span class="k">this</span>
+    <span class="nv">store = </span><span class="nx">@get</span> <span class="s1">&#39;store&#39;</span>
+    <span class="nv">storeKey = </span><span class="nx">@get</span> <span class="s1">&#39;storeKey&#39;</span>
+    <span class="nv">status = </span><span class="nx">store</span><span class="p">.</span><span class="nx">readStatus</span> <span class="nx">storeKey</span>
+     
+    <span class="k">if</span> <span class="nx">status</span> <span class="o">==</span> <span class="nx">K</span><span class="p">.</span><span class="nx">READY_NEW</span>
+      <span class="nv">jqxhr = </span><span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">(</span><span class="nv">type: </span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="nv">url: </span><span class="s1">&#39;/friends&#39;</span><span class="p">,</span> <span class="nv">data: </span><span class="p">{</span> <span class="s1">&#39;friend&#39;</span><span class="o">:</span> <span class="nx">store</span><span class="p">.</span><span class="nx">readDataHash</span><span class="p">(</span><span class="nx">storeKey</span><span class="p">)})</span>
+        <span class="p">.</span><span class="nx">done</span> <span class="nf">(dataHash) -&gt;</span>
+          <span class="nv">newId = </span><span class="nx">dataHash</span><span class="p">.</span><span class="nx">id</span>
+          <span class="k">delete</span> <span class="nx">dataHash</span><span class="p">.</span><span class="nx">id</span>
+
+          <span class="nx">store</span><span class="p">.</span><span class="nx">writeStatus</span> <span class="nx">storeKey</span><span class="p">,</span> <span class="nx">K</span><span class="p">.</span><span class="nx">READY_CLEAN</span>
+          <span class="nx">SC</span><span class="p">.</span><span class="nx">Store</span><span class="p">.</span><span class="nx">replaceIdFor</span> <span class="nx">storeKey</span><span class="p">,</span> <span class="nx">newId</span>
+          <span class="nx">store</span><span class="p">.</span><span class="nx">pushRetrieve</span> <span class="nx">recordType</span><span class="p">,</span> <span class="nx">newId</span><span class="p">,</span> <span class="nx">dataHash</span><span class="p">,</span> <span class="nx">storeKey</span>
+      <span class="nx">YES</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="nx">status</span> <span class="o">==</span> <span class="nx">K</span><span class="p">.</span><span class="nx">READY_DIRTY</span>
+      <span class="nv">id = </span><span class="nx">@get</span> <span class="s1">&#39;id&#39;</span>
+      <span class="nv">jqxhr = </span><span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">(</span><span class="nv">type: </span><span class="s1">&#39;PUT&#39;</span><span class="p">,</span> <span class="nv">url: </span><span class="s2">&quot;/friends/#{id}&quot;</span><span class="p">,</span> <span class="nv">data: </span><span class="p">{</span> <span class="s1">&#39;friend&#39;</span><span class="o">:</span> <span class="nx">store</span><span class="p">.</span><span class="nx">readDataHash</span><span class="p">(</span><span class="nx">storeKey</span><span class="p">)})</span>
+        <span class="p">.</span><span class="nx">done</span> <span class="nf">(dataHash) -&gt;</span>
+          <span class="k">delete</span> <span class="nx">dataHash</span><span class="p">.</span><span class="nx">id</span>
+          <span class="nx">store</span><span class="p">.</span><span class="nx">writeStatus</span> <span class="nx">storeKey</span><span class="p">,</span> <span class="nx">K</span><span class="p">.</span><span class="nx">READY_CLEAN</span>
+          <span class="nx">store</span><span class="p">.</span><span class="nx">pushRetrieve</span> <span class="nx">recordType</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">dataHash</span><span class="p">,</span> <span class="nx">storeKey</span>
+    <span class="k">else</span>
+      <span class="nx">NO</span>
+  <span class="k">delete</span><span class="o">:</span> <span class="o">-&gt;</span>
+    <span class="nv">rec = </span><span class="k">this</span>
+    <span class="nv">id = </span><span class="nx">@get</span> <span class="s1">&#39;id&#39;</span>
+    <span class="nv">jqxhr = </span><span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">(</span><span class="nv">type: </span><span class="s1">&#39;DELETE&#39;</span><span class="p">,</span> <span class="nv">url: </span><span class="s1">&#39;/friends/#{id}&#39;</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">done</span> <span class="o">-&gt;</span>
+        <span class="nx">rec</span><span class="p">.</span><span class="nx">destroy</span><span class="p">()</span>
+    <span class="nx">YES</span>
+
+<span class="nv">query = </span><span class="nx">SC</span><span class="p">.</span><span class="nx">Query</span><span class="p">.</span><span class="nx">local</span> <span class="nx">App</span><span class="p">.</span><span class="nx">Friend</span>
+<span class="nv">data = </span><span class="nx">App</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">find</span> <span class="nx">query</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>observer = ->
+  if data.get('status') == SC.Record.READY_CLEAN
+    data.removeObserver('status', this, observer)
+    App.friendsController.set('content', [data])</p>
+
+<p>data.addObserver 'status', this, observer</p>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

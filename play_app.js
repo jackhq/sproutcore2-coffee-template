@@ -1,9 +1,9 @@
 (function() {
   var Play, cat, cats, friend, _i, _j, _len, _len2, _ref;
-  cats = ['best', 'coworker', 'basic'];
   Play = SC.Application.create();
   Play.Category = SC.Object.extend({
-    name: null,
+    label: null,
+    value: null,
     friends: null
   });
   Play.Friend = SC.Object.extend({
@@ -18,8 +18,6 @@
     content: [],
     arrayDidChange: function(item, idx, removedCnt, addedCnt) {
       this._super(item, idx, removedCnt, addedCnt);
-      console.log(item);
-      console.log(idx);
       if ((item != null) && item.length > 0 && item[idx].friends === null) {
         if (item[idx].name === 'best') {
           item[idx].friends = Play.friendsController.filterProperty('category', 'best');
@@ -28,9 +26,8 @@
           item[idx].friends = Play.friendsController.filterProperty('category', 'coworker');
         }
         if (item[idx].name === 'basic') {
-          item[idx].friends = Play.friendsController.filterProperty('category', 'basic');
+          return item[idx].friends = Play.friendsController.filterProperty('category', 'basic');
         }
-        return console.log('Added Friends...');
       }
     }
   });
@@ -39,6 +36,8 @@
     best: [],
     coworkers: [],
     basic: [],
+    name: null,
+    cat: null,
     arrayDidChange: function(item, idx, removedCnt, addedCnt) {
       this._super(item, idx, removedCnt, addedCnt);
       this.set('best', this.filterProperty('category', 'best'));
@@ -46,7 +45,13 @@
       return this.set('basic', this.filterProperty('category', 'basic'));
     },
     createFriend: function() {
-      return this.pushObject(Play.Friend.create());
+      console.log(this.get('cat'));
+      this.pushObject(Play.Friend.create({
+        name: this.get('name'),
+        category: this.get('cat')
+      }));
+      this.set('name', '');
+      return this.set('cat', '');
     }
   });
   window.Play = Play;
@@ -78,10 +83,12 @@
       category: friend.category
     }));
   }
+  cats = ['best', 'coworker', 'basic'];
   for (_j = 0, _len2 = cats.length; _j < _len2; _j++) {
     cat = cats[_j];
     Play.categoriesController.pushObject(Play.Category.create({
-      name: cat
+      label: cat,
+      value: cat
     }));
   }
 }).call(this);
