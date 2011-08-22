@@ -46,6 +46,7 @@
             <h4>{{content.unit_name}}</h4>
             <ul>
               {{#content.unit_wings}}
+                {{#if isSelected}}
                 <li>
                   <strong>{{name}}</strong>
                   <ul>
@@ -56,6 +57,7 @@
                     {{/wing_residents}}
                   </ul>
                 </li>
+                {{/if}}
               {{/content.unit_wings}}
             </ul>
           {{/if}}
@@ -69,9 +71,9 @@
       <h1>Filter</h1>
       <script type="text/html">
         {{#collection Residents.UnitFilterView}}}
-          {{view Residents.FilterItemView title=content.unit_name}}
+          {{view Residents.UnitFilterItemView title=content.unit_name}}
           {{#collection Residents.WingFilterView}}
-            {{content.name}}
+            {{view Residents.WingFilterItemView title=content.name}}
           {{/collection}}
         {{/collection}}
       </script>

@@ -87,7 +87,8 @@ Residents.Unit = SC.Object.extend
 
 Residents.Wing = SC.Object.extend
   wing_residents: []
-  wing_name: null
+  name: null
+  isSelected: true
 
 ###############
 # Controllers #
@@ -110,14 +111,6 @@ Residents.residentsController = SC.ArrayProxy.create
 Residents.unitsController = SC.ArrayProxy.create
   content: []
 
-  arrayDidChange: (addedObjects, removedObjects, changeIndex, addedCount) ->
-    @_super(addedObjects, removedObjects, changeIndex, addedCount)
-
-    if addedObjects? and addedObjects.length > 0
-      for unit in unitsData
-        if addedObjects[removedObjects].unit_name is unit.name
-          addedObjects[removedObjects].residents = Residents.residentsController.filterProperty('unit', unit.name)
-
   createUnit: (unit) ->
     @pushObject Residents.Unit.create
       unit_name: unit.name
@@ -128,7 +121,7 @@ Residents.wingsController = SC.ArrayProxy.create
 
   createWing: (wing) ->
     @pushObject Residents.Wing.create
-      wing_name: wing.name
+      name: wing.name
       wing_residents: wing.residents
 
 #########
@@ -143,12 +136,16 @@ Residents.UnitFilterView = SC.CollectionView.extend
   contentBinding: 'Residents.unitsController'
   tagName: 'ul'
 
+Residents.UnitFilterItemView = SC.Checkbox.extend
+  contentBinding: 'Residents.unitsController'
+  valueBinding: "parentView.content.isSelected"
+
 Residents.WingFilterView = SC.CollectionView.extend
   contentBinding: "parentView.content.unit_wings"
   tagName: 'ul'
 
-Residents.FilterItemView = SC.Checkbox.extend
-  contentBinding: 'Residents.unitsController'
+Residents.WingFilterItemView = SC.Checkbox.extend
+  contentBinding: 'Residents.wingsController'
   valueBinding: "parentView.content.isSelected"
 
 #############
@@ -161,6 +158,7 @@ residents = for resident in residentsData
 units = for unit in unitsData
   wings = for wing in unit.wings
     wing.wing_residents = []
+    wing.isSelected = true
     residents = Residents.residentsController.filterProperty('wing', wing.name)
     for resident in residents
       wing.wing_residents.push resident

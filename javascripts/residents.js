@@ -87,7 +87,8 @@
   });
   Residents.Wing = SC.Object.extend({
     wing_residents: [],
-    wing_name: null
+    name: null,
+    isSelected: true
   });
   Residents.residentsController = SC.ArrayProxy.create({
     content: [],
@@ -106,18 +107,6 @@
   });
   Residents.unitsController = SC.ArrayProxy.create({
     content: [],
-    arrayDidChange: function(addedObjects, removedObjects, changeIndex, addedCount) {
-      var unit, _i, _len, _results;
-      this._super(addedObjects, removedObjects, changeIndex, addedCount);
-      if ((addedObjects != null) && addedObjects.length > 0) {
-        _results = [];
-        for (_i = 0, _len = unitsData.length; _i < _len; _i++) {
-          unit = unitsData[_i];
-          _results.push(addedObjects[removedObjects].unit_name === unit.name ? addedObjects[removedObjects].residents = Residents.residentsController.filterProperty('unit', unit.name) : void 0);
-        }
-        return _results;
-      }
-    },
     createUnit: function(unit) {
       return this.pushObject(Residents.Unit.create({
         unit_name: unit.name,
@@ -129,7 +118,7 @@
     content: [],
     createWing: function(wing) {
       return this.pushObject(Residents.Wing.create({
-        wing_name: wing.name,
+        name: wing.name,
         wing_residents: wing.residents
       }));
     }
@@ -142,12 +131,16 @@
     contentBinding: 'Residents.unitsController',
     tagName: 'ul'
   });
+  Residents.UnitFilterItemView = SC.Checkbox.extend({
+    contentBinding: 'Residents.unitsController',
+    valueBinding: "parentView.content.isSelected"
+  });
   Residents.WingFilterView = SC.CollectionView.extend({
     contentBinding: "parentView.content.unit_wings",
     tagName: 'ul'
   });
-  Residents.FilterItemView = SC.Checkbox.extend({
-    contentBinding: 'Residents.unitsController',
+  Residents.WingFilterItemView = SC.Checkbox.extend({
+    contentBinding: 'Residents.wingsController',
     valueBinding: "parentView.content.isSelected"
   });
   residents = (function() {
@@ -171,6 +164,7 @@
         for (_j = 0, _len2 = _ref.length; _j < _len2; _j++) {
           wing = _ref[_j];
           wing.wing_residents = [];
+          wing.isSelected = true;
           residents = Residents.residentsController.filterProperty('wing', wing.name);
           _results2.push((function() {
             var _k, _len3, _results3;
