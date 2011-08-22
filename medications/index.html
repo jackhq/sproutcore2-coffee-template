@@ -75,7 +75,7 @@
 
   <script type="text/x-handlebars" data-template-name="time-taken-detail">
     {{view SC.Checkbox title="Hide" valueBinding="content.hide"}}
-    <h2>{{content.title}}</h2>
+    <h2>{{content.title}} ({{content.medication_count}})</h2>
     {{collection ResidentsShow.MedicationCollectionView classBinding="parentView.content.hide" contentBinding="content.medications"}}
     <hr />
   </script>
@@ -106,8 +106,10 @@
         <p>Current Administrator</p>
         <h4>User Name</h4>
         <hr></hr>
-        <p>Allergies</p>
         <script type='text/html'>
+          {{#view contentBinding="ResidentsShow.allergiesController"}}
+            <p>Allergies ({{content.length}})</p>
+          {{/view}}
           {{#collection contentBinding="ResidentsShow.allergiesController"}}
             <span>{{content.name}}</span>
           {{^}}
@@ -115,8 +117,10 @@
           {{/collection}}
         </script>
         <hr></hr>
-        <p>On Hold Medications</p>
         <script type='text/html'>
+          {{#view contentBinding="ResidentsShow.medicationsController.on_hold"}}
+            <p>On Hold Medications ({{content.length}})</p>
+          {{/view}}
           {{#collection contentBinding="ResidentsShow.medicationsController.on_hold"}}
             {{content.name}}
           {{^}}
@@ -124,8 +128,10 @@
           {{/collection}}
         </script>
         <hr></hr>
-        <p>Discontinued Medications</p>
         <script type='text/html'>
+          {{#view contentBinding="ResidentsShow.medicationsController.discontinued"}}
+            <p>Discontinued Medications ({{content.length}})</p>
+          {{/view}}
           {{#collection contentBinding="ResidentsShow.medicationsController.discontinued"}}
             {{content.name}}
           {{^}}

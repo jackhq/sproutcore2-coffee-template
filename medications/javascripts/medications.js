@@ -39,14 +39,14 @@
     name: null,
     concept_type: null
   });
-  ResidentsShow.TimeOfDay = SC.Object.extend({
-    title: null
-  });
   ResidentsShow.TimeTaken = SC.Object.extend({
     title: null,
     medications: [],
     hide: false,
-    editMode: false
+    editMode: false,
+    medication_count: SC.computed(function() {
+      return this.medications.length;
+    })
   });
   ResidentsShow.residentsController = SC.ArrayProxy.create({
     content: [],

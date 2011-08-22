@@ -47,14 +47,13 @@ ResidentsShow.Allergy = SC.Object.extend
   name: null
   concept_type: null
 
-ResidentsShow.TimeOfDay = SC.Object.extend
-  title: null
-
 ResidentsShow.TimeTaken = SC.Object.extend
   title: null
   medications: []
   hide: false
   editMode: false
+  medication_count: SC.computed -> @medications.length
+
 
 ###############
 # Controllers #
