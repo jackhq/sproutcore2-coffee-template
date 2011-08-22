@@ -82,9 +82,10 @@ Residents.Resident = SC.Object.extend
 
 # This hide is not working for wings yet. Same thing works for the unit just fine.
 Residents.Unit = SC.Object.extend
-  wings: [{hide: false}]
+  wings: []
   unit_name: null
-
+  isSelected: true
+      
 ###############
 # Controllers #
 ###############
@@ -123,13 +124,21 @@ Residents.unitsController = SC.ArrayProxy.create
 # Views #
 #########
 
-Residents.UnitsView = SC.CollectionView.extend
+Residents.ResidentsView = SC.CollectionView.extend
+  contentBinding: 'Residents.unitsController'
+  tagName: 'ul'
+  
+Residents.UnitFilterView = SC.CollectionView.extend
   contentBinding: 'Residents.unitsController'
   tagName: 'ul'
 
-Residents.UnitsFilterView = SC.Checkbox.extend
-  contentBinding: 'Residents.unitsController'
+Residents.WingFilterView = SC.CollectionView.extend
+  contentBinding: "parentView.content.wings"
   tagName: 'ul'
+
+Residents.FilterItemView = SC.Checkbox.extend
+  contentBinding: 'Residents.unitsController'
+  valueBinding: "parentView.content.isSelected"
 
 #############
 # Load Data #
