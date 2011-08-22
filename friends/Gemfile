@@ -1,0 +1,6 @@
+source 'http://rubygems.org'
+
+gem 'sinatra'
+gem 'rabl'
+gem 'mongo_mapper'
+gem 'bson_ext'
