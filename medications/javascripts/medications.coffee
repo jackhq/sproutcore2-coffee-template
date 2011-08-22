@@ -40,6 +40,7 @@ ResidentsShow.Medication = SC.Object.extend
   as_needed: false
   editMode: false
   state: null
+  administration_comments: null
 
 ResidentsShow.Allergy = SC.Object.extend
   id: null
@@ -51,7 +52,7 @@ ResidentsShow.TimeTaken = SC.Object.extend
   title: null
   medications: []
   hide: false
-  editMode: false
+  editable: false
   medication_count: SC.computed -> @medications.length
 
 
@@ -74,11 +75,11 @@ ResidentsShow.medicationsController = SC.ArrayProxy.create
   arrayDidChange: (item, idx, removeCnt, addedCnt) ->
     @_super(item, idx, removeCnt, addedCnt)
     times_taken = ['early_morning', 'morning', 'noon', 'evening', 'before_bedtime', 'bedtime', 'other', 'as_needed']
+    states = ['current', 'morning', 'on_hold', 'discontinued']
     for time_taken in times_taken
       @set(time_taken, @filterProperty(time_taken, true))
-    @set('current', @filterProperty('state', 'current'))
-    @set('on_hold', @filterProperty('state', 'on_hold'))
-    @set('discontinued', @filterProperty('state', 'discontinued'))
+    for state in states
+      @set(state, @filterProperty('state', state))
 
   createMedication: (attributes) -> @pushObject ResidentsShow.Medication.create attributes
 
@@ -111,6 +112,14 @@ ResidentsShow.TimeTakenDetailView = SC.View.extend
 ResidentsShow.TimesTakenCollectionView = SC.CollectionView.extend
   itemViewClass: ResidentsShow.TimeTakenDetailView
   tagName: 'ul'
+
+ResidentsShow.EditModeView = SC.Checkbox.extend
+  valueBinding: "parentView.content.editable"
+  classNames: 'right'
+
+ResidentsShow.HideView = SC.Checkbox.extend
+  valueBinding: "parentView.content.hide"
+  classNames: 'left'
 
 #############
 # Mock Data #
@@ -168,6 +177,7 @@ for resident_id in [1]
       other: Faker.Helpers.randomize(true_false())
       as_needed: Faker.Helpers.randomize(true_false())
       state: Faker.Helpers.randomize(medication_states)
+      administration_comments: "hello world"
 
   for time_taken in times_taken
     ResidentsShow.timesTakenController.create
