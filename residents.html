@@ -70,11 +70,13 @@
     <div id='residents-filter' class="one-thirds column">
       <h1>Filter</h1>
       <script type="text/html">
-        {{#collection Residents.UnitFilterView}}}
+        {{#collection Residents.UnitFilterView}}
           {{view Residents.UnitFilterItemView title=content.unit_name}}
-          {{#collection Residents.WingFilterView}}
-            {{view Residents.WingFilterItemView title=content.name}}
-          {{/collection}}
+            {{#collection Residents.WingFilterView}}
+              {{#if parentView.parentView.content.isSelected}}
+                {{view Residents.WingFilterItemView title=content.name}}
+              {{/if}}
+            {{/collection}}
         {{/collection}}
       </script>
     </div>

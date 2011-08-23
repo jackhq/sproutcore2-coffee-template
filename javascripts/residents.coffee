@@ -146,7 +146,7 @@ Residents.WingFilterView = SC.CollectionView.extend
 
 Residents.WingFilterItemView = SC.Checkbox.extend
   contentBinding: 'Residents.wingsController'
-  valueBinding: "parentView.content.isSelected"
+  valueBinding: "parentView.parentView.content.isSelected"
 
 #############
 # Load Data #

@@ -141,7 +141,7 @@
   });
   Residents.WingFilterItemView = SC.Checkbox.extend({
     contentBinding: 'Residents.wingsController',
-    valueBinding: "parentView.content.isSelected"
+    valueBinding: "parentView.parentView.content.isSelected"
   });
   residents = (function() {
     var _i, _len, _results;
@@ -158,26 +158,26 @@
     for (_i = 0, _len = unitsData.length; _i < _len; _i++) {
       unit = unitsData[_i];
       wings = (function() {
-        var _j, _len2, _ref, _results2;
+        var _i, _len, _ref, _results;
         _ref = unit.wings;
-        _results2 = [];
-        for (_j = 0, _len2 = _ref.length; _j < _len2; _j++) {
-          wing = _ref[_j];
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          wing = _ref[_i];
           wing.wing_residents = [];
           wing.isSelected = true;
           residents = Residents.residentsController.filterProperty('wing', wing.name);
-          _results2.push((function() {
-            var _k, _len3, _results3;
-            _results3 = [];
-            for (_k = 0, _len3 = residents.length; _k < _len3; _k++) {
-              resident = residents[_k];
+          _results.push((function() {
+            var _i, _len, _results;
+            _results = [];
+            for (_i = 0, _len = residents.length; _i < _len; _i++) {
+              resident = residents[_i];
               wing.wing_residents.push(resident);
-              _results3.push(Residents.wingsController.createWing(wing));
+              _results.push(Residents.wingsController.createWing(wing));
             }
-            return _results3;
+            return _results;
           })());
         }
-        return _results2;
+        return _results;
       })();
       _results.push(Residents.unitsController.createUnit(unit));
     }
