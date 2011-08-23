@@ -85,10 +85,32 @@ Residents.Unit = SC.Object.extend
   unit_name: null
   isSelected: true
 
+  isSelectedWillChange: ( ->
+    # This attribute is being set correctly.
+    # The unit name changes to 'Foo' when checked.
+    # However, iterating over the unit wings
+    # and updating the isSelected property
+    # isn't working correctly.
+    # There is an issues with the wing bindings below.
+    # -pb
+    this.set('unit_name', 'Foo')
+  ).observes('*isSelected')
+
 Residents.Wing = SC.Object.extend
   wing_residents: []
   name: null
   isSelected: true
+
+  isSelectedWillChange: ( ->
+    # These attributes are not being set correctly.
+    # The point of this setter is test that the
+    # bindings are working correctly.
+    # The wing name should change to 'Bar' when checked.
+    # -pb
+    this.set('name', 'Bar')
+    this.set('isSelected', true)
+    console.log this
+  ).observes('*isSelected')
 
 ###############
 # Controllers #
@@ -145,22 +167,26 @@ Residents.WingFilterView = SC.CollectionView.extend
   tagName: 'ul'
 
 Residents.WingFilterItemView = SC.Checkbox.extend
-  contentBinding: 'Residents.wingsController'
+  # Not sure which binding is correct. WIP -pb
+  # contentBinding: 'parentView.content.unit_wings'
+  contentBinding: 'parentView.content.unit_wings'
   valueBinding: "parentView.content.isSelected"
 
 #############
 # Load Data #
 #############
 
-residents = for resident in residentsData
+for resident in residentsData
   Residents.residentsController.createResident(resident)
 
-units = for unit in unitsData
-  wings = for wing in unit.wings
+for unit in unitsData
+  for wing in unit.wings
     wing.wing_residents = []
     wing.isSelected = true
+
     residents = Residents.residentsController.filterProperty('wing', wing.name)
     for resident in residents
       wing.wing_residents.push resident
       Residents.wingsController.createWing(wing)
+
   Residents.unitsController.createUnit(unit)

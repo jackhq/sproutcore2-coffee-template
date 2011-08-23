@@ -42,10 +42,12 @@
       <h1>Residents</h1>
       <script type="text/html">
         {{#collection Residents.ResidentsView}}
+          {{content.isSelected}}
           {{#if content.isSelected}}
             <h4>{{content.unit_name}}</h4>
             <ul>
               {{#content.unit_wings}}
+                {{isSelected}}
                 {{#if isSelected}}
                 <li>
                   <strong>{{name}}</strong>
@@ -70,9 +72,11 @@
     <div id='residents-filter' class="one-thirds column">
       <h1>Filter</h1>
       <script type="text/html">
-        {{#collection Residents.UnitFilterView}}}
+        {{#collection Residents.UnitFilterView}}
+          {{content.isSelected}}
           {{view Residents.UnitFilterItemView title=content.unit_name}}
           {{#collection Residents.WingFilterView}}
+            {{content.isSelected}}
             {{view Residents.WingFilterItemView title=content.name}}
           {{/collection}}
         {{/collection}}

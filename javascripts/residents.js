@@ -1,5 +1,5 @@
 (function() {
-  var resident, residents, residentsData, unit, units, unitsData, wing, wings;
+  var resident, residents, residentsData, unit, unitsData, wing, _i, _j, _k, _l, _len, _len2, _len3, _len4, _ref;
   unitsData = [
     {
       name: 'Unit A',
@@ -83,12 +83,20 @@
   Residents.Unit = SC.Object.extend({
     unit_wings: [],
     unit_name: null,
-    isSelected: true
+    isSelected: true,
+    isSelectedWillChange: (function() {
+      return this.set('unit_name', 'Foo');
+    }).observes('*isSelected')
   });
   Residents.Wing = SC.Object.extend({
     wing_residents: [],
     name: null,
-    isSelected: true
+    isSelected: true,
+    isSelectedWillChange: (function() {
+      this.set('name', 'Bar');
+      this.set('isSelected', true);
+      return console.log(this);
+    }).observes('*isSelected')
   });
   Residents.residentsController = SC.ArrayProxy.create({
     content: [],
@@ -133,54 +141,34 @@
   });
   Residents.UnitFilterItemView = SC.Checkbox.extend({
     contentBinding: 'Residents.unitsController',
-    valueBinding: "parentView.content.isSelected"
+    valueBinding: 'parentView.content.isSelected'
   });
   Residents.WingFilterView = SC.CollectionView.extend({
-    contentBinding: "parentView.content.unit_wings",
+    contentBinding: 'parentView.content.unit_wings',
     tagName: 'ul'
   });
   Residents.WingFilterItemView = SC.Checkbox.extend({
-    contentBinding: 'Residents.wingsController',
-    valueBinding: "parentView.content.isSelected"
+    contentBinding: 'parentView.content.unit_wings',
+    valueBinding: 'parentView.content.isSelected'
   });
-  residents = (function() {
-    var _i, _len, _results;
-    _results = [];
-    for (_i = 0, _len = residentsData.length; _i < _len; _i++) {
-      resident = residentsData[_i];
-      _results.push(Residents.residentsController.createResident(resident));
+  for (_i = 0, _len = residentsData.length; _i < _len; _i++) {
+    resident = residentsData[_i];
+    Residents.residentsController.createResident(resident);
+  }
+  for (_j = 0, _len2 = unitsData.length; _j < _len2; _j++) {
+    unit = unitsData[_j];
+    _ref = unit.wings;
+    for (_k = 0, _len3 = _ref.length; _k < _len3; _k++) {
+      wing = _ref[_k];
+      wing.wing_residents = [];
+      wing.isSelected = true;
+      residents = Residents.residentsController.filterProperty('wing', wing.name);
+      for (_l = 0, _len4 = residents.length; _l < _len4; _l++) {
+        resident = residents[_l];
+        wing.wing_residents.push(resident);
+        Residents.wingsController.createWing(wing);
+      }
     }
-    return _results;
-  })();
-  units = (function() {
-    var _i, _len, _results;
-    _results = [];
-    for (_i = 0, _len = unitsData.length; _i < _len; _i++) {
-      unit = unitsData[_i];
-      wings = (function() {
-        var _j, _len2, _ref, _results2;
-        _ref = unit.wings;
-        _results2 = [];
-        for (_j = 0, _len2 = _ref.length; _j < _len2; _j++) {
-          wing = _ref[_j];
-          wing.wing_residents = [];
-          wing.isSelected = true;
-          residents = Residents.residentsController.filterProperty('wing', wing.name);
-          _results2.push((function() {
-            var _k, _len3, _results3;
-            _results3 = [];
-            for (_k = 0, _len3 = residents.length; _k < _len3; _k++) {
-              resident = residents[_k];
-              wing.wing_residents.push(resident);
-              _results3.push(Residents.wingsController.createWing(wing));
-            }
-            return _results3;
-          })());
-        }
-        return _results2;
-      })();
-      _results.push(Residents.unitsController.createUnit(unit));
-    }
-    return _results;
-  })();
+    Residents.unitsController.createUnit(unit);
+  }
 }).call(this);
